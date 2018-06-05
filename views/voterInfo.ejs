@@ -1,4 +1,6 @@
 <%- include('header', {title: "Voter Info"});  -%>
+<script type="text/javascript" src="../plugins/QrCode/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../plugins/printElement/printThis.js"></script>
     </head>
 
     <body>
@@ -9,11 +11,58 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-            <div class="container">
-                <%= voter %>
-                <%= pk%>
-            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="container">
+                    <h4>Name:
+                        <%= voter.fullName %>
+                    </h4>
+                    <h5>Form No:
+                        <%= voter.formNo %>
+                    </h5>
+                    <h5>Date of Birth:
+                        <%= voter.DOB %>
+                    </h5>
+                    <h5>Sex:
+                        <%= voter.sex %>
+                    </h5>
+                    <h5>Father's Name:
+                        <%= voter.fatherName %>
+                    </h5>
+                    <h5>Citizenship No:
+                        <%= voter.citizenshipNo %>
+                    </h5>
+                    <h5>Address:
+                        <%= voter.address %>
+                    </h5>
+                    <h5>Account Address:
+                        <%= voter.ethAddress %>
+                    </h5>
+                    <div id="qrcode" style="display: none;">
+                            
+                    </div>
+                    <div>
+                            <img id="qrImage"></img>
+                    </div>
+                    
+        
+                    <button id="printQr" class="btn btn-success" style="display: none;">Print</button>
+                    <% if(pk) { %>
+                        <script>
+                            $("#qrcode").qrcode("<%= pk %>");
+                            var canvas = $("#qrcode canvas");
+                            var image = canvas[0].toDataURL('image/png');
+                            console.log(image)
+                            $("#qrImage").attr('src', image);
+                            $("#printQr").show();
+                            $("#printQr").on('click', function(event) {
+                                $("#qrImage").printThis();
+                            });
+                        </script>
+                    <% } %>
+                        
+                </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
 

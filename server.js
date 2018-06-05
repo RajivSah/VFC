@@ -246,7 +246,7 @@ app.post('/api/voter/:id', function (req, res) {
     delete updatedInfo.submit;
     voterModel.findByIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
         if (!err) {
-            setNotification(req, true, "success", "Voter added Successfully");
+            setNotification(req, true, "success", "Voter updated Successfully");
             res.redirect('/voter/manage');
         } else {
             setNotification(req, true, "error", "Upadting Voter Failed");
@@ -311,10 +311,11 @@ app.route('/api/voter')
         } else {
             voterModel.find(function (err, docs) {
                 if (!err) {
-                    var votersDetails = {};
-                    votersDetails.total = docs.length;
-                    votersDetails.rows = docs;
-                    res.json(votersDetails);
+                    // var votersDetails = {};
+                    // votersDetails.total = docs.length;
+                    // votersDetails.rows = docs;
+                    // res.json(votersDetails);
+                    res.json(docs);
                 } else {
                     res.status(500).send(err).end();
                 }
