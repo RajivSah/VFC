@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Add Voter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css"></head>
+    <link rel="stylesheet" href="../plugins/loader/css/preloader.css">
+    <script src="../plugins/loader/js/jquery.preloader.min.js"></script>
+    <script src="../plugins/animatedModal/js/animatedModal.min.js"></script>
+    <script type="text/javascript" src="../plugins/printElement/jQuery.print.min.js"></script>
+    <script type="text/javascript" src="../plugins/QrCode/jquery.qrcode.min.js"></script>
+
+<body>
+    <form id="addVoterForm">
+        <label for="form_no">Form No:</label>
+        <input type="text" id="form_no" required><br>
+        <label for="voterName" >Name</label>
+        <input type="text" id="voterName" required><br>
+        <label for="voterDOB">DOB:</label>
+        <input type="date" id="voterDOB" required><br>
+        <label for=citizenshipNo>Citizenship No:</labe>
+        <input type="text" id="citizenshipNo" required><br>
+        <button type="submit">Register</button>
+    </form> 
+
+
+    <div class="loader"></div>
+
+    <a id="modalLink" href="#animatedModal"></a>
+    <div id="animatedModal">
+        <div class="close-animatedModal"> 
+            CLOSE MODAL
+        </div>
+            
+        <div class="modal-content" id="modal-content">
+            <div id="qrcode"></div>
+            <input id="printQR" type="button" value="Print" />
+        </div>
+    </div>
+
+    <div id="div-to-print"></div>
+
+
+    <script>
+        $("div-to-print").hide();
+        $("#addVoterForm").submit(function(event) {
+            event.preventDefault();
+            var data = {
+                form_no: $("#form_no").val(),
+                voterName: $("#voterName").val(),
+                voterDOB: $("#voterDOB").val(),
+                citizenshipNo: $("#citizenshipNo").val()
+            };
+            $.ajax({
+                method: "POST",
+                data: data,
+                beforeSend: function() {
+                    $('.loader').preloader({
+                        text: "Regestering Voter..."
+                    });
+                },
+                success: function(response) {
+                    $("#addVoterForm")[0].reset();
+                    $('.loader').preloader('remove');
+                    $("#modalLink").trigger('click');
+                    $("#qrcode").qrcode({
+                        text: JSON.stringify(response)
+                    });
+                },
+                error: function(error) {
+                    $('.loader').preloader('remove');
+                    console.log(error);
+                }
+            });             
+        });
+        
+        $("#modalLink").animatedModal({
+            animatedIn: 'zoomIn',
+            animatedOut: 'bounceOut'
+        });
+      
+        $("#printQR").click(function() {
+            var canvas = $("#qrcode > canvas");
+            var qrImage = canvas[0].toDataURL();
+            $("#div-to-print").html('<img src="'+qrImage+'"/>');
+            $("#div-to-print").print({
+                title:"QR Ballot"
+            });
+        });
+
+    </script>
+</body>
+</html>

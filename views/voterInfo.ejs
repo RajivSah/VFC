@@ -1,0 +1,50 @@
+<%- include('header', {title: "Voter Info"});  -%>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="col">
+                <!-- Navbar -->
+                <%- include('voterNavbar');  -%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <div class="container">
+                <%= voter %>
+                <%= pk%>
+            </div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                const toast = swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "/notification",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.toNotify) {
+                            toast({
+                                type: response.type,
+                                title: response.message
+                            });
+                            $.ajax({
+                                method: "GET",
+                                url: '/clearNotification'
+                            });
+                        }
+
+                    }
+                });
+            });
+        </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+        

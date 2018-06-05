@@ -1,0 +1,299 @@
+<div class="container form-container">
+  <form class="form-horizontal" data-toggle="validator" id="voter-form" method="post" action="/api/voter">
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend>Voter's Detail</legend>
+
+      <div class="form-row">
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="formNo">Form No.</label>
+          <div class="col-md-12">
+            <input id="formNo" name="formNo" placeholder="Enter the Form number" class="form-control input-md" required="" type="number">
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="fullName">Full Name</label>
+          <div class="col-md-12">
+            <input id="fullName" name="fullName" placeholder="Enter Full Name" class="form-control input-md" required="" type="text">
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Date input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="dob">D.O.B.</label>
+          <div class="col-md-12">
+            <input id="dob" name="dob" placeholder="" class="form-control input-md" required="" type="date">
+            <div class="help-block with-errors"></div>
+
+          </div>
+        </div>
+
+        <!-- Multiple Radios -->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="sex">Sex</label>
+          <div class="col-md-12">
+            <div class="radio col-md-6">
+              <label for="sex-0">
+                <input name="sex" id="sex-0" value="Male" checked="checked" type="radio"> Male
+              </label>
+            </div>
+            <div class="radio col-md-6">
+              <label for="sex-1">
+                <input name="sex" id="sex-1" value="Female" type="radio"> Female
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="fatherName">Father Name</label>
+          <div class="col-md-12">
+            <input id="fatherName" name="fatherName" placeholder="Enter Full Name of Voter's Father" class="form-control input-md" required=""
+              type="text">
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="motherName">Mother Name</label>
+          <div class="col-md-12">
+            <input id="motherName" name="motherName" placeholder="Enter Full Name of Voter's Mother" class="form-control input-md" type="text">
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-row">
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="citizenshipNo">Citizenship No.</label>
+          <div class="col-md-12">
+            <input id="citizenshipNo" name="citizenshipNo" placeholder="Enter Citizenship Number" class="form-control input-md" type="text">
+            <div class="help-block with-errors"></div>
+
+          </div>
+        </div>
+
+        <!-- Select Basic -->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="district">District</label>
+          <div class="col-md-12">
+            <select id="district" name="district" class="form-control">
+              <option value="Jhapa">Jhapa</option>
+              <option value="Ilam">Ilam</option>
+              <option value="Panchthar">Panchthar</option>
+              <option value="Taplejung">Taplejung</option>
+              <option value="Morang">Morang</option>
+              <option value="Sunsari">Sunsari</option>
+              <option value="Bhojpur">Bhojpur</option>
+              <option value="Dhankuta">Dhankuta</option>
+              <option value="Terhathum">Terhathum</option>
+              <option value="Sankhuwasabha">Sankhuwasabha</option>
+              <option value="Saptari">Saptari</option>
+              <option value="Siraha">Siraha</option>
+              <option value="Udayapur">Udayapur</option>
+              <option value="Khotang">Khotang</option>
+              <option value="Okhaldhunga">Okhaldhunga</option>
+              <option value="Solukhumbu">Solukhumbu</option>
+              <option value="Dhanusa">Dhanusa</option>
+              <option value="Mahottari">Mahottari</option>
+              <option value="Sarlahi">Sarlahi</option>
+              <option value="Sindhuli">Sindhuli</option>
+              <option value="Ramechhap">Ramechhap</option>
+              <option value="Dolakha">Dolakha</option>
+              <option value="Bhaktapur">Bhaktapur</option>
+              <option value="Dhading">Dhading</option>
+              <option value="Kathmandu">Kathmandu</option>
+              <option value="Kavrepalanchok">Kavrepalanchok</option>
+              <option value="Lalitpur">Lalitpur</option>
+              <option value="Nuwakot">Nuwakot</option>
+              <option value="Rasuwa">Rasuwa</option>
+              <option value="Sindhupalchok">Sindhupalchok</option>
+              <option value="Bara">Bara</option>
+              <option value="Parsa">Parsa</option>
+              <option value="Rautahat">Rautahat</option>
+              <option value="Chitwan">Chitwan</option>
+              <option value="Makwanpur">Makwanpur</option>
+              <option value="Gorkha">Gorkha</option>
+              <option value="Kaski">Kaski</option>
+              <option value="Lamjung">Lamjung</option>
+              <option value="Syangja">Syangja</option>
+              <option value="Tanahun">Tanahun</option>
+              <option value="Manang">Manang</option>
+              <option value="Kapilvastu">Kapilvastu</option>
+              <option value="Nawalparasi">Nawalparasi</option>
+              <option value="Rupandehi">Rupandehi</option>
+              <option value="Arghakhanchi">Arghakhanchi</option>
+              <option value="Gulmi">Gulmi</option>
+              <option value="Palpa">Palpa</option>
+              <option value="Baglung">Baglung</option>
+              <option value="Myagdi">Myagdi</option>
+              <option value="Parbat">Parbat</option>
+              <option value="Mustang">Mustang</option>
+              <option value="Dang">Dang</option>
+              <option value="Pyuthan">Pyuthan</option>
+              <option value="Rolpa">Rolpa</option>
+              <option value="Rukum">Rukum</option>
+              <option value="Salyan">Salyan</option>
+              <option value="Dolpa">Dolpa</option>
+              <option value="Humla">Humla</option>
+              <option value="Jumla">Jumla</option>
+              <option value="Kalikot">Kalikot</option>
+              <option value="Mugu">Mugu</option>
+              <option value="Banke">Banke</option>
+              <option value="Bardiya">Bardiya</option>
+              <option value="Surkhet">Surkhet</option>
+              <option value="Dailekh">Dailekh</option>
+              <option value="Jajarkot">Jajarkot</option>
+              <option value="Kailali">Kailali</option>
+              <option value="Achham">Achham</option>
+              <option value="Doti">Doti</option>
+              <option value="Bajhang">Bajhang</option>
+              <option value="Bajura">Bajura</option>
+              <option value="Kanchanpur">Kanchanpur</option>
+              <option value="Dadeldhura">Dadeldhura</option>
+              <option value="Baitadi">Baitadi</option>
+              <option value="Darchula">Darchula</option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="form-row">
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="address">Address</label>
+          <div class="col-md-12">
+            <input id="address" name="address" placeholder="Enter the Address of Voter" class="form-control input-md" type="text">
+            <div class="help-block with-errors"></div>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="nagarpalikaNo">Nagarpalika No.</label>
+          <div class="col-md-12">
+            <input id="nagarpalikaNo" name="nagarpalikaNo" placeholder="Enter the Nagarpalika No." class="form-control input-md" required=""
+              type="text">
+            <div class="help-block with-errors"></div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Button -->
+      <div class="form-group">
+        <label class="col-md-12 control-label" for="submit"></label>
+        <div class="col-md-12">
+          <button id="submitButton" type="submit" name="submit" class="btn btn-primary">Register</button>
+        </div>
+      </div>
+
+    </fieldset>
+  </form>
+</div>
+
+
+<style>
+  .with-errors {
+    height: 20px;
+    font-size: 90%;
+    color: red;
+  }
+
+  .form-container {
+    padding: 8%;
+    background-color: #F1F7FC;
+  }
+
+  #voter-form {
+    background-color: white;
+    padding: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+<script>
+  $(function () {
+    var query = window.location.search;
+    const toast = swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    if (query) {
+      var loadingPopup = function () {
+        swal({
+          text: "loading...",
+          onOpen: function () {
+            swal.showLoading();
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false
+        });
+      }
+      var loadingPopdown = function () {
+        swal.close();
+      }
+      $.ajax({
+        method: "GET",
+        url: "http://localhost:8001/api/voter" + query,
+        beforeSend: function () {
+          loadingPopup();
+        },
+        success: function (doc) {
+          loadingPopdown();
+          $("#formNo").val(doc.formNo);
+          $("#fullName").val(doc.fullName);
+          var date = new Date(doc.DOB);
+          var day = ("0" + date.getDate()).slice(-2);
+          var month = ("0" + (date.getMonth() + 1)).slice(-2);
+          var onlyDate = date.getFullYear()+"-"+(month)+"-"+(day) ;
+          $("#dob").val(onlyDate);
+          if(doc.sex == 'Male'){
+            console.log("Male");
+            $("#sex-0").prop('checked', true);
+          } else {
+            console.log("female");
+            $("#sex-1").prop('checked', true);
+          }
+          $("#fatherName").val(doc.fatherName);
+          $("#motherName").val(doc.motherName);
+          $("#citizenshipNo").val(doc.citizenshipNo);
+          $("#district").val(doc.district);
+          $("#address").val(doc.address);
+          $("#nagarpalikaNo").val(doc.nagarpalikaNo);
+          $("#submitButton").html("Update");
+          $("#voter-form").attr('mehtod', 'put');
+          $("#voter-form").attr('action', '/api/voter/'+ doc._id);
+          
+        },
+        error: function (error) {
+          loadingPopdown();
+          toast({
+            type: "error",
+            title: "Error! Try again later"
+          });
+        }
+      });
+    }
+    
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>

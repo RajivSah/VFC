@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="../public/assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="../public/assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+
+
+    <div class="login-dark">
+        <form method="post">
+            <h2 class="sr-only">Login Form</h2>
+            <div class="illustration">
+                <i class="icon ion-ios-locked-outline"></i>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="userName" placeholder="Username" autofocus="" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">Log In</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            const toast = swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            function getQueryParams(qs) {
+                qs = qs.split('+').join(' ');
+
+                var params = {},
+                    tokens,
+                    re = /[?&]?([^=]+)=([^&]*)/g;
+
+                while (tokens = re.exec(qs)) {
+                    params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+                }
+
+                return params;
+            }
+            if (window.location.search) {
+                query = getQueryParams(window.location.search);
+                var message;
+                if(query.error == 'user'){
+                    message = "User not found";
+                } else {
+                    message = "Incorrect Password";
+                }
+                toast({
+                    type: "error",
+                    title: message
+                })
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/sweetalert2@7.21.1/dist/sweetalert2.all.js"></script>
+</body>
+
+</html>
