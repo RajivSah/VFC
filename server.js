@@ -32,6 +32,7 @@ app.use(session({
 //     console.log(req.url);
 //     next();
 // });
+
 app.use((req, res, next) => {
     if (!req.session.user && url.parse(req.url).pathname != '/login' && req.url != '/notification') {
         res.redirect('/login');
@@ -343,7 +344,9 @@ app.get('/logout', (req, res) => {
     }
 });
 
-
+// Candidate Page
+var _candidate=require('./controllers/candidate_manager');
+app.get('/candidate', _candidate.index );
 
 app.listen(config.PORT, function (err) {
     if (!err) {
