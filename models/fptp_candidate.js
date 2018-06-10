@@ -4,8 +4,10 @@ var Schema=mongoose.Schema;
 var fptp_candidateSchem=new Schema({
     district: String,
     constituency: Number,
+    electedfor: String ,
     candidateName_np: String,
     candidateName_eng: String,
+    citizenshipNo: String,
     age: Number,
     gender: String,
     partyId: Number,
@@ -14,7 +16,8 @@ var fptp_candidateSchem=new Schema({
     symbolName: String,
     symbolFileName: String,
     status:String,
-    electedfor: String          // HOR (House of Representative) or PA (public Assembly)  
+    ethAddress: String,
+    pkHash: String        // HOR (House of Representative) or PA (public Assembly)  
 
 
 });
