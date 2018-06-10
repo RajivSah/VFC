@@ -14,7 +14,8 @@ var voterSchem = new Schema({
         address: String,
         ethAddress: String,
         nagarpalikaNo: String,
-        pkHash: String
+        pkHash: String,
+        tokenTransferred :Boolean   
 });
 
 var model = mongoose.model('voters', voterSchem);
