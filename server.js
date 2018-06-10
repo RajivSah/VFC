@@ -8,7 +8,7 @@ const voterModel = require('./models/voters');
 const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
-const url =require('url');
+const url = require('url');
 
 var router = express.Router();
 var app = express();
@@ -28,10 +28,7 @@ app.use(session({
         expires: 600000
     }
 }));
-// app.use((req, res, next) => {
-//     console.log(req.url);
-//     next();
-// });
+
 app.use((req, res, next) => {
     if (!req.session.user && url.parse(req.url).pathname != '/login' && req.url != '/notification') {
         res.redirect('/login');
@@ -76,11 +73,30 @@ var setNotification = function (req, notify, Type = null, Message = null) {
 
 var web3 = new Web3();
 var myContract;
-if (web3.setProvider(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'))) {
-    console.log('*************************');
-    web3.eth.net.isListening().then(console.log);
-    myContract = new web3.eth.Contract(config.ABI, config.OWNER_ADDRESS);
-}
+
+app.use((req, res, next) => {
+    if (web3.currentProvider == undefined) {
+        web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
+        console.log('*************************');
+        web3.eth.net.isListening().then(console.log);
+        myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
+        myContract.events.RegisteredVoter({fromBlock: 0})
+            .on('data', function (data) {
+                console.log(data.returnValues.voter);
+                voterModel.findOneAndUpdate({ ethAddress: data.returnValues.voter }, { tokenTransferred: true }, function (err, result) {
+                    if (!err) {
+                        console.log("status approved", data.returnValues.voter);
+                    }
+                })
+            })
+            .on('error', function (error) {
+                console.log(error);
+            });
+
+    }
+    next();
+});
+
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {
@@ -91,7 +107,13 @@ connectDb = function (username = 'rajiv', password = 'rajiv') {
         }
     });
 }
-connectDb();
+
+app.use((req, res, next) => {
+    if (mongoose.connection.readyState == 0) {
+        connectDb();
+    }
+    next();
+})
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -148,7 +170,16 @@ app.route('/login')
 // admin
 
 app.get('/admin', (req, res) => {
-    res.render('admin');
+    var data = {};
+    data.ownerAddress = config.OWNER_ADDRESS;
+    data.contractAddress = config.CONTRACT_ADDRESS;
+    voterModel.count({}, function (err, count) {
+        data.count = count;
+        voterModel.count({ voted: true }, function (err, count) {
+            data.voted = count;
+            res.render('home', { data: data });
+        });
+    });
 });
 
 app.route('/admin/createUser')
@@ -159,6 +190,37 @@ app.route('/admin/createUser')
 app.route('/admin/searchUser')
     .get(function (req, res) {
         res.render('admin-searchUser');
+    });
+
+app.route('/admin/contract')
+    .get(function (req, res) {
+        res.render('contract');
+    });
+
+app.route('/admin/transferToken')
+    .get(function (req, res) {
+        voterModel.find(function (err, docs) {
+            if (!err) {
+                docs.map(function (doc, index) {
+                    myContract.methods.addVoter(doc.ethAddress).send({ from: config.OWNER_ADDRESS })
+                        .on('transactionHash', function (hash) {
+                            console.log(hash);
+                        })
+                        .on('conformation', function (confNo, receipt) {
+                            console.log(confNo);
+                        })
+                        .on('receipt', function (receipt) {
+                            console.log("receipt received");
+                        })
+                        .on('error', function (error) {
+                            console.log(error);
+                        });
+                });
+            } else {
+                setNotification(req, true, "error", "error occured while transfer token");
+                res.redirect('/admin');
+            }
+        })
     });
 
 app.route('/api/users')
@@ -284,12 +346,28 @@ app.route('/api/voter')
                     address: req.body.address,
                     ethAddress: voterAddress.address,
                     nagarpalikaNo: req.body.nagarpalikaNo,
-                    pkHash: pkHash
+                    pkHash: pkHash,
+                    tokenTransferred: false
                 }, function (error, doc) {
                     if (error) {
                         res.status(500).send(error).end();
                         console.log(error);
                     } else {
+
+                        myContract.methods.addVoter(doc.ethAddress).send({ from: config.OWNER_ADDRESS })
+                            .on('transactionHash', function (hash) {
+                                console.log(hash);
+                            })
+                            .on('confirmation', function (confNo, receipt) {
+                                console.log(confNo);
+                            })
+                            .on('receipt', function (receipt) {
+                                console.log("receipt received");
+                            })
+                            .on('error', function (error) {
+                                console.log(error);
+                            });
+
                         setNotification(req, true, "success", "Voter Added Successfully");
                         pk = voterAddress.privateKey;
                         res.redirect('/voter?id=' + doc.id);
@@ -342,7 +420,6 @@ app.get('/logout', (req, res) => {
         res.redirect('/login');
     }
 });
-
 
 
 app.listen(config.PORT, function (err) {
