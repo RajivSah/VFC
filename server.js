@@ -9,10 +9,11 @@ const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
-
+// var routes=require('./routes');
 var router = express.Router();
 var app = express();
 var pk = null;
+// routes.initialize(app);
 app.set('view engine', 'ejs');
 
 app.use('/plugins', express.static(__dirname + '/plugins'));
@@ -28,13 +29,6 @@ app.use(session({
         expires: 600000
     }
 }));
-<<<<<<< HEAD
-// app.use((req, res, next) => {
-//     console.log(req.url);
-//     next();
-// });
-=======
->>>>>>> cca524ea20a79f802223b1f9d0e3af5370552b07
 
 app.use((req, res, next) => {
     if (!req.session.user && url.parse(req.url).pathname != '/login' && req.url != '/notification') {
@@ -428,12 +422,6 @@ app.get('/logout', (req, res) => {
     }
 });
 
-<<<<<<< HEAD
-// Candidate Page
-var _candidate=require('./controllers/candidate_manager');
-app.get('/candidate', _candidate.index );
-=======
->>>>>>> cca524ea20a79f802223b1f9d0e3af5370552b07
 
 app.listen(config.PORT, function (err) {
     if (!err) {
