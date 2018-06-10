@@ -38,6 +38,13 @@
                     <h5>Account Address:
                         <%= voter.ethAddress %>
                     </h5>
+                    <h5>Status:
+                        <% if (voter.tokenTransferred) { %>
+                            OK
+                        <% } else { %>
+                            pending...
+                        <% } %>
+                    </h5>
                     <div id="qrcode" style="display: none;">
                             
                     </div>
