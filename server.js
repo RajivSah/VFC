@@ -9,11 +9,10 @@ const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
-// var routes=require('./routes');
-var router = express.Router();
-var app = express();
+var routes=require('./routes');
+var router = express.Router();var app = express();
 var pk = null;
-// routes.initialize(app);
+routes.initialize(app);
 app.set('view engine', 'ejs');
 
 app.use('/plugins', express.static(__dirname + '/plugins'));
