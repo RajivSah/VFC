@@ -2,6 +2,8 @@ const express  = require('express');
 const router = express.Router();
 const config = require('../config');
 const userModel = require('../models/users');
+const setNotification = require('../notification');
+
 
 router.route('/')
     .get(function (req, res) {
@@ -35,7 +37,11 @@ router.route('/')
                     password: user.password,
                     role: user.role
                 }, function (err, doc) {
-                    setNotification(req, true, "success", "User added successfully");
+                    if (!err){
+                        setNotification(req, true, "success", "User added successfully");
+                    } else {
+                        setNotification(req, true, "error", "User Failed to add");
+                    }
                     res.redirect('/admin/createUser');
                 });
             }

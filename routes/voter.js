@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const voterModel = require('../models/voters');
 
+var pk = null;
+
+
 router.get('/', function (req, res) {
     if (req.query.id) {
         voterModel.findById(req.query.id, function (err, doc) {
