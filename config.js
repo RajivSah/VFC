@@ -1,3 +1,5 @@
+const Datastore = require('nedb');
+const path = require('path');
 const configure = {
     "files.associations": {
         "*.ejs" : "html"
@@ -241,7 +243,12 @@ const configure = {
     OWNER_ADDRESS: "0xe374d147ec45668ce39ae3e3725bf5d22af78463",
     CONTRACT_ADDRESS: "0x6872cb3acf4603e2b086e44d7e4031e9b6a32c9b",
     web3Connection: 'http://127.0.0.1:8546',
-    pk: null
+    pk: null,
+    BASE_DIR: __dirname,
+    db : new Datastore({
+        filename: (path.join(__dirname) + '/logs/votersLog'),
+        autoload: true
+    })
 }
 
 module.exports = configure;
