@@ -2,20 +2,21 @@ var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
 
 var fptp_candidateSchem=new Schema({
-    district: String,
+    district: String, 
     constituency: Number,
     electedfor: String ,
-    candidateName_np: String,
-    candidateName_eng: String,
-    citizenshipNo: String,
-    age: Number,
-    gender: String,
-    partyId: Number,
-    partyName: String,
+    candidateName_np: String, //
+    candidateName_eng: String, //
+    citizenshipNo: String, //
+    fatherName: String, //
+    motherName: String, //
+    dob: Date, //
+    gender: String,  //
+    partyId: Number, //
+    partyName: String, //
     symbolId: Number,
-    symbolName: String,
+    symbolName: String, //
     symbolFileName: String,
-    status:String,
     ethAddress: String,
     pkHash: String        // HOR (House of Representative) or PA (public Assembly)  
 

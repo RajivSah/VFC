@@ -1,0 +1,307 @@
+<div class="container form-container">
+    <form class="form-horizontal" data-toggle="validator" id="voter-form" method="post" action="">
+      <fieldset>
+  
+        <!-- Form Name -->
+        <legend>FPTP Candidate Registration</legend>
+  
+        <div class="form-row">
+          <!-- Text input-->
+          <div class="form-group col-md-6">
+              <label class="col-md-12 control-label" for="district">Candidate For</label>
+              <div class="col-md-12">
+                <select required id="candidate_for" name="district" class="form-control" >
+                    <option value="" selected  hidden>Choose One</option>
+                  <option value="HOR">House of Representatives</option>
+                  <option value="PA">Provisional Assembly</option>
+                </select>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+
+
+            <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="district">District</label>
+            <div class="col-md-12">
+              <select id="district" name="district" class="form-control" required="required" type="text">
+                  <option value="dist"selected disabled hidden>Choose One</option>
+                <% districts.forEach(function(dist){ %>
+                  <option><%=dist.name %></option>
+                <% }); %>
+              </select>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          </div>
+          
+  
+
+
+        <div class="form-row">
+
+            <!-- Text input-->
+          <div class="form-group col-md-6">
+              <label class="col-md-12 control-label" for="partyId">Party Id.</label>
+              <div class="col-md-12">
+                <input id="partyId" name="formNo" placeholder="Enter the Party ID" class="form-control input-md" required="" type="number">
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+          
+            
+  
+            
+    
+            <!-- Text input-->
+            <div class="form-group col-md-6">
+                <label class="col-md-12 control-label" for="partyName">Party Name</label>
+                <div class="col-md-12">
+                  <input id="partyName" name="partyName" placeholder="Enter Party Name" class="form-control input-md" required="" type="text">
+                  <div class="help-block with-errors"></div>
+                </div>
+              </div>
+
+          </div>
+
+
+          <div class="form-row">
+
+              <!-- Text input-->
+              <div class="form-group col-md-6">
+                  <label class="col-md-12 control-label" for="symbolName">Election Symbol </label>
+                  <div class="col-md-12">
+                    <input id="symbolName" name="symbolName" placeholder="Name of the Symbol" class="form-control input-md" required="" type="text">
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+              
+                           
+        
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="const_number">Constituenty Number (
+                        निर्वाचन क्षेत्र)</label>
+                    <div class="col-md-12">
+                      <select id="const_number" name="const_number" class="form-control">
+                        <option value="dist"selected disabled hidden>Choose One</option>
+                        
+                      </select>
+                    </div>
+                  </div>
+    
+                
+    
+              </div>
+
+
+              <div class="form-row">
+                  <!-- Text input-->
+                  <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="citizenshipNo">Citizenship No.</label>
+                    <div class="col-md-12">
+                      <input id="citizenshipNo" name="citizenshipNo" placeholder="Enter Citizenship Number" class="form-control input-md" type="text" required="">
+                      <div class="help-block with-errors"></div>
+          
+                    </div>
+                  </div>
+          
+                  <!-- Upload Symbol -->
+                  <div class="form-group col-md-6">
+                      <label class="col-md-12 control-label" for="election_img">Upload Election Symbol</label>
+                      <div class="col-md-12">
+                          <input class="form-control" name="elect" type="file" id="election_img" required=''>
+                        <div class="help-block with-errors"></div>
+            
+                      </div>
+                    </div>
+          
+          
+                </div>
+
+
+
+          <div class="form-row">
+
+              <!-- Text input-->
+              <div class="form-group col-md-6">
+                  <label class="col-md-12 control-label" for="fullName">Full Name of the Candidate in English</label>
+                  <div class="col-md-12">
+                    <input id="fullName" name="fullName" placeholder="Enter Full Name in English" class="form-control input-md" required="" type="text">
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+              
+    
+              
+      
+              <!-- Text input-->
+              <div class="form-group col-md-6">
+                <label class="col-md-12 control-label" for="partyName">उम्मेदवारको पूरा नाम</label>
+                <div class="col-md-12">
+                  <input id="partyName" name="fullName" placeholder="नाम नेपालीमा" class="form-control input-md" required="" type="text">
+                  <div class="help-block with-errors"></div>
+                </div>
+              </div>
+            </div>
+  
+  
+
+
+        
+
+  
+        <div class="form-row">
+          <!-- Date input-->
+          <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="dob">D.O.B.</label>
+            <div class="col-md-12">
+              <input id="dob" name="dob" placeholder="" class="form-control input-md" required="" type="date">
+              <div class="help-block with-errors"></div>
+  
+            </div>
+          </div>
+  
+          <!-- Multiple Radios -->
+          <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="sex">Sex</label>
+            <div class="col-md-12">
+              <div class="radio col-md-6">
+                <label for="sex-0">
+                  <input name="sex" id="sex-0" value="Male" checked="checked" type="radio"> Male
+                </label>
+              </div>
+              <div class="radio col-md-6">
+                <label for="sex-1">
+                  <input name="sex" id="sex-1" value="Female" type="radio"> Female
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <!-- Text input-->
+          <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="fatherName">Father Name</label>
+            <div class="col-md-12">
+              <input id="fatherName" name="fatherName" placeholder="Enter Full Name of Voter's Father" class="form-control input-md" required=""
+                type="text">
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+  
+          <!-- Text input-->
+          <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="motherName">Mother Name</label>
+            <div class="col-md-12">
+              <input id="motherName" name="motherName" placeholder="Enter Full Name of Voter's Mother" class="form-control input-md" type="text">
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+  
+        </div>
+        
+        
+  
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-12 control-label" for="submit"></label>
+          <div class="col-md-12">
+            <button id="submitButton" type="submit" name="submit" class="btn btn-primary">Register</button>
+          </div>
+        </div>
+  
+      </fieldset>
+    </form>
+  </div>
+  
+  
+  <style>
+    .with-errors {
+      height: 20px;
+      font-size: 90%;
+      color: red;
+    }
+  
+    .form-container {
+      padding: 8%;
+      background-color: #F1F7FC;
+    }
+  
+    #voter-form {
+      background-color: white;
+      padding: 5%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+  <script>
+    $(function () {
+      var query = window.location.search;
+      const toast = swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      if (query) {
+        var loadingPopup = function () {
+          swal({
+            text: "loading...",
+            onOpen: function () {
+              swal.showLoading();
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false
+          });
+        }
+        var loadingPopdown = function () {
+          swal.close();
+        }
+        $.ajax({
+          method: "GET",
+          url: "http://localhost:8001/api/voter" + query,
+          beforeSend: function () {
+            loadingPopup();
+          },
+          success: function (doc) {
+            loadingPopdown();
+            $("#formNo").val(doc.formNo);
+            $("#fullName").val(doc.fullName);
+            var date = new Date(doc.DOB);
+            var day = ("0" + date.getDate()).slice(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var onlyDate = date.getFullYear()+"-"+(month)+"-"+(day) ;
+            $("#dob").val(onlyDate);
+            if(doc.sex == 'Male'){
+              console.log("Male");
+              $("#sex-0").prop('checked', true);
+            } else {
+              console.log("female");
+              $("#sex-1").prop('checked', true);
+            }
+            $("#fatherName").val(doc.fatherName);
+            $("#motherName").val(doc.motherName);
+            $("#citizenshipNo").val(doc.citizenshipNo);
+            $("#district").val(doc.district);
+            $("#address").val(doc.address);
+            $("#nagarpalikaNo").val(doc.nagarpalikaNo);
+            $("#submitButton").html("Update");
+            $("#voter-form").attr('mehtod', 'put');
+            $("#voter-form").attr('action', '/api/voter/'+ doc._id);
+            
+          },
+          error: function (error) {
+            loadingPopdown();
+            toast({
+              type: "error",
+              title: "Error! Try again later"
+            });
+          }
+        });
+      }
+      
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
