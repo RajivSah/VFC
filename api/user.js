@@ -16,7 +16,6 @@ router.route('/')
                     });
                     resolve(data);
                 }).then((data) => {
-                    console.log(data)
                     res.json(data);
                 });
             }

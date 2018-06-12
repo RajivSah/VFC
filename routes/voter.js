@@ -1,14 +1,12 @@
 const router = require('express').Router();
 const voterModel = require('../models/voters');
-
-var pk = null;
-
+const config = require('../config');
 
 router.get('/', function (req, res) {
     if (req.query.id) {
         voterModel.findById(req.query.id, function (err, doc) {
-            res.render('voterInfo', { voter: doc, pk: pk });
-            pk = null;
+            res.render('voterInfo', { voter: doc, pk: config.pk });
+            config.pk = null;
         });
 
     } else {

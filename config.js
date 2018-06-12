@@ -240,7 +240,8 @@ const configure = {
     ], 
     OWNER_ADDRESS: "0xe374d147ec45668ce39ae3e3725bf5d22af78463",
     CONTRACT_ADDRESS: "0x6872cb3acf4603e2b086e44d7e4031e9b6a32c9b",
-    web3Connection: 'http://127.0.0.1:8546'
+    web3Connection: 'http://127.0.0.1:8546',
+    pk: null
 }
 
 module.exports = configure;
