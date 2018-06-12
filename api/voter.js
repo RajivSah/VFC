@@ -5,6 +5,7 @@ const config = require('../config');
 const crypto = require('crypto');
 const setNotification = require('../notification');
 var Datastore = require('nedb');
+var path = require('path');
 
 var web3 = new Web3();
 var myContract;
@@ -23,7 +24,7 @@ router.use((req, res, next) => {
 router.post('/:id', function (req, res) {
     var updatedInfo = req.body;
     delete updatedInfo.submit;
-    voterModel.findByIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
+    voterModel.finconfig.dbyIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
         if (!err) {
             setNotification(req, true, "success", "Voter updated Successfully");
             res.redirect('/voter/manage');
@@ -36,10 +37,6 @@ router.post('/:id', function (req, res) {
 
 router.route('/')
     .post(function (req, res) {
-        var db = new Datastore({
-            filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
-            autoload: true
-        });
         
         voterModel.find({ $or: [{ "formNo": req.body.formNo }, { "citizenshipNo": req.body.citizenshipNo }] }, function (err, result) {
             if (err) {
@@ -75,7 +72,7 @@ router.route('/')
                         res.status(500).send(error).end();
                         console.log(error);
                     } else {
-                        db.insert({ address: doc.ethAddress, txHash: null });
+                        config.db.insert({ address: doc.ethAddress, txHash: null, timestamp: Date.now() });
                         setNotification(req, true, "success", "Voter Added Successfully");
                         config.pk = voterAddress.privateKey;
                         res.redirect('/voter?id=' + doc.id);
@@ -87,7 +84,7 @@ router.route('/')
     })
     .get(function (req, res) {
         if (req.query.id) {
-            voterModel.findById(req.query.id, function (err, doc) {
+            voterModel.finconfig.dbyId(req.query.id, function (err, doc) {
                 if (!err) {
                     res.json(doc);
                 } else {
@@ -110,7 +107,7 @@ router.route('/')
 
     })
     .delete(function (req, res) {
-        voterModel.findByIdAndRemove(req.body.id, function (err, result) {
+        voterModel.finconfig.dbyIdAndRemove(req.body.id, function (err, result) {
             if (!err) {
                 res.send(result);
             } else {
