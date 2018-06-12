@@ -1,5 +1,24 @@
 const router = require('express').Router();
 const voterModel = require('../models/voters');
+const Web3 = require('web3');
+const config = require('../config');
+const crypto = require('crypto');
+const setNotification = require('../notification');
+var Datastore = require('nedb');
+
+var web3 = new Web3();
+var myContract;
+
+
+router.use((req, res, next) => {
+    if (web3.currentProvider == undefined) {
+        web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
+        web3.eth.net.isListening().then(console.log);
+        myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
+    }
+    next();
+});
+
 
 router.post('/:id', function (req, res) {
     var updatedInfo = req.body;
@@ -17,13 +36,18 @@ router.post('/:id', function (req, res) {
 
 router.route('/')
     .post(function (req, res) {
+        var db = new Datastore({
+            filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+            autoload: true
+        });
+        
         voterModel.find({ $or: [{ "formNo": req.body.formNo }, { "citizenshipNo": req.body.citizenshipNo }] }, function (err, result) {
             if (err) {
                 res.status(500).send(error).end();
                 console.log(error);
             } else if (result.length) {
                 setNotification(req, true, "error", "Voter Already Exists");
-                res.redirect('/voter/register');
+                res.redirect('/voter?id=' + result[0].id);
             } else {
                 var voterAddress = web3.eth.accounts.create();
 
@@ -51,24 +75,10 @@ router.route('/')
                         res.status(500).send(error).end();
                         console.log(error);
                     } else {
-                        web3.eth.
-                        myContract.methods.addVoter(doc.ethAddress).send({ from: config.OWNER_ADDRESS })
-                            .on('transactionHash', function (hash) {
-                                console.log(hash);
-
-                                setNotification(req, true, "success", "Voter Added Successfully");
-                                pk = voterAddress.privateKey;
-                                res.redirect('/voter?id=' + doc.id);
-                            })
-                            .on('confirmation', function (confNo, receipt) {
-                                console.log(confNo);
-                            })
-                            .on('receipt', function (receipt) {
-                                console.log("receipt received");
-                            })
-                            .on('error', function (error) {
-                                console.log(error);
-                            });
+                        db.insert({ address: doc.ethAddress, txHash: null });
+                        setNotification(req, true, "success", "Voter Added Successfully");
+                        config.pk = voterAddress.privateKey;
+                        res.redirect('/voter?id=' + doc.id);
                     }
                 });
             }

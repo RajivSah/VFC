@@ -15,6 +15,8 @@ const userApi = require('./api/user');
 const loginRoute = require('./routes/login');
 const voterRoute = require('./routes/voter');
 const voterApi = require('./api/voter');
+const Datastore = require('nedb');
+
 
 var router = express.Router();
 var app = express();
@@ -89,12 +91,20 @@ app.use((req, res, next) => {
             console.log(blockNumber);
             myContract.events.RegisteredVoter({ fromBlock: blockNumber })
                 .on('data', function (data) {
-                    fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber+1);
+                    fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber + 1);
                     voterModel.findOneAndUpdate({ ethAddress: data.returnValues.voter }, { tokenTransferred: true }, function (err, result) {
                         if (!err) {
                             console.log("status approved", data.returnValues.voter);
                         }
-                    })
+                    });
+                    var db = new Datastore({
+                        filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+                        autoload: true
+                    });
+                    db.remove({address: data.returnValues.voter}, {multi: false}, function(err, number) {
+                        if(!err) console.log("removed data: ", number);
+                    });
+
                 })
                 .on('error', function (error) {
                     console.log(error);
@@ -104,6 +114,37 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+setInterval(function () {
+    var db = new Datastore({
+        filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+        autoload: true
+    });
+    if (web3.eth.currentProvider) {
+        var ethAddress;
+        db.findOne({ txHash: null }, function (err, doc) {
+            if (doc) {
+                ethAddress = doc.address;
+                myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
+                    .on('transactionHash', function (hash) {
+                        console.log(hash);        
+                        db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
+                    })
+                    .on('confirmation', function (confNo, receipt) {
+                        console.log(confNo);
+                    })
+                    .on('receipt', function (receipt) {
+                        console.log("receipt received");
+                    })
+                    .on('error', function (error) {
+                        console.log(error);
+                    });
+            }
+        });
+
+    }
+
+}, 10000);
 
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
