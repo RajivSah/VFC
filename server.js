@@ -101,8 +101,8 @@ app.use((req, res, next) => {
                         filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
                         autoload: true
                     });
-                    db.remove({address: data.returnValues.voter}, {multi: false}, function(err, number) {
-                        if(!err) console.log("removed data: ", number);
+                    db.remove({ address: data.returnValues.voter }, { multi: false }, function (err, number) {
+                        if (!err) console.log("removed data: ", number);
                     });
 
                 })
@@ -116,18 +116,19 @@ app.use((req, res, next) => {
 });
 
 setInterval(function () {
-    var db = new Datastore({
-        filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
-        autoload: true
-    });
+
     if (web3.eth.currentProvider) {
+        var db = new Datastore({
+            filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+            autoload: true
+        });
         var ethAddress;
         db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
-                        console.log(hash);        
+                        console.log(hash);
                         db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
                     })
                     .on('confirmation', function (confNo, receipt) {
@@ -142,6 +143,35 @@ setInterval(function () {
             }
         });
 
+    }
+
+}, 10000);
+
+setInterval(function () {
+
+    if (web3.eth.net.isListening()) {
+        var db = new Datastore({
+            filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+            autoload: true
+        });
+        var ethAddress;
+        var tenMinutes = Date.now() - 600000;
+        db.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
+            console.log(doc);
+            web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
+                console.log(result);
+                if (!err) {
+                    if (result) {
+                        if (result.status == "0x0") {
+                            db.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });
+                        }
+                    } else {
+                        db.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });                        
+                    }
+
+                }
+            });
+        });
     }
 
 }, 10000);
