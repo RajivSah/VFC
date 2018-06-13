@@ -79,7 +79,7 @@
                                     console.log(willDelete);
                                     if (willDelete.value) {
                                         $.ajax({
-                                            url: "http://localhost:8001/api/voter",
+                                            url: "http://localhost:8001/candidate/fptp/delete",
                                             method: "DELETE",
                                             data: { "id": event.target.name },
                                             beforeSend: function () {
@@ -118,7 +118,7 @@
 
                         $("#voterTable").on('click-cell.bs.table', function(field, value, row, element) {
                             if(value != '_id'){
-                                window.location.href = '/voter?id='+element._id;                                
+                                window.location.href = '/candidate/fptp_candidate?id='+element._id;                                
                             }
                         });
 

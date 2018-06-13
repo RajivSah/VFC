@@ -11,7 +11,7 @@ module.exports.initialize=function(app) {
     
     app.post('/candidate/fptp_candidate/:id', candidate.update_fptp_candidate_info);            // Updates the candidate Information
     app.post('/candidate/fptp/save', candidate.register);                                       // Registers a new Candidate
-
+    app.delete('/candidate/fptp/delete', candidate.delete);     
 
 
     app.get('/get/district_const/:district_name', candidate_api.fetch_Constituency);            // API call to get District Information 

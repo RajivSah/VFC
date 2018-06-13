@@ -10,40 +10,11 @@
             <%- include('candidate_man_navbar');  -%>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 offset-1">
-            <form data-toggle="validator" role="form">
-                <div class="form-group row">
-                    <label class="col-2 col-form-label" for="watchContract">Contract Deployed @</label>
-                    <div class="col-5">
-                        <input id="watchContract" name="watchContract" placeholder="Contract Address" pattern="^(0x){1}[0-9a-fA-F]{40}$" class="form-control here" required="required"
-                            type="text" data-error="Not a valid Address">
-                            <div class="help-block with-errors text-danger"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="offset-2 col-4">
-                        <button name="submit" type="submit" class="btn btn-primary">Watch</button>
-                    </div>
-                </div>
-            </form>
-            <div>
-                    
-            </div>
-            <a href="/admin/transferToken"><button class="btn btn-success" id="transfer">Transfer Token</button></a>
-            
-        </div>
-        <div class="col-md-2"></div>
-    </div>
-    <div class="row">
-
-    </div>
+    <h4>Total Number of FPTP_Candidates: <%= candidates.length %></h4>
+    <h4>Total Number of PR_Candidates: </h4>
 
 
-    <script>
-
-    </script>
+   
 <script type="text/javascript" src="../plugins/bootstrap-validator/validator.min.js"></script>
 
     <%- include('footer'); -%>

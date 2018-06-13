@@ -1,5 +1,4 @@
-<%- include('header', {title: "Voter Management"});  -%>
-<link rel="stylesheet" href="../plugins/QRScanner/style.css">
+<%- include('header', {title: "FPTP Candidate Registration"});  -%>
     </head>
 
     <body>
@@ -35,81 +34,7 @@
                 });
             </script>
             <script src="https://unpkg.com/sweetalert2@7.21.1/dist/sweetalert2.all.js"></script>
-            <script type="text/javascript" src="../plugins/QRScanner/instascan.min.js"></script>
-            <script type="text/javascript">
-      var audio = new Audio('../plugins/QRScanner/beep.mp3');
-
-      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-      scanner.addListener('scan', function (content) {
-        audio.play();
-        //console.log(content);
-        //alert(content);
-
-        swal({
-
-            text: content,
-            type: "success"
-        })
-        report(content);
-
-      });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
-          console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
-
-      function report(content)
-      {
-
-
-        var formIndex=content.indexOf("Form_no :-");
-        var nameIndex=content.indexOf("Name:-");
-        var dobIndex=content.indexOf("DOB:-");
-        var citizenIndex=content.indexOf("Citizenship No:-");
-
-
-        var space=content.split("Citizenship No:-");
-        var citizen=space[1];
-        var space1=space[0].split("DOB:-");
-        var dob=space1[1];
-        var space2=space1[0].split("Name:-");
-        var name=space2[1];
-        var space3=space2[0].split("Form_no :-");
-        var form=space3[1];
-        //$("#result").text(form+" ------ "+utf8Decode(name)+" ------ ("+dob.replace(/^\s+|\s+$/g, '')+") ----------  "+utf8Decode(citizen));
-        //$("#preview").css("display","none");
-
-        document.getElementById('fullName').value = utf8Decode(name);
-        document.getElementById('formNo').value = parseInt(form);
-        document.getElementById('citizenshipNo').value = utf8Decode(citizen);
-        document.getElementById('dob').value = dob.replace(/^\s+|\s+$/g, '');
-
-        //var a=scanner.stop();
-      }
-
-
-      function utf8Decode(utf8String) {
-          if (typeof utf8String != 'string') throw new TypeError('parameter ‘utf8String’ is not a string');
-        // note: decode 3-byte chars first as decoded 2-byte strings could appear to be 3-byte char!
-          const unicodeString = utf8String.replace(
-            /[\u00e0-\u00ef][\u0080-\u00bf][\u0080-\u00bf]/g,  // 3-byte chars
-              function(c) {  // (note parentheses for precedence)
-                    var cc = ((c.charCodeAt(0)&0x0f)<<12) | ((c.charCodeAt(1)&0x3f)<<6) | ( c.charCodeAt(2)&0x3f);
-                    return String.fromCharCode(cc); }
-              ).replace(
-                /[\u00c0-\u00df][\u0080-\u00bf]/g,                 // 2-byte chars
-                function(c) {  // (note parentheses for precedence)
-                    var cc = (c.charCodeAt(0)&0x1f)<<6 | c.charCodeAt(1)&0x3f;
-                    return String.fromCharCode(cc); }
-              );
-        return unicodeString;
-      }
-    </script>
+            
 
 
     </body>
