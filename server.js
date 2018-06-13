@@ -20,7 +20,7 @@ const loginRoute = require('./routes/login');
 const voterRoute = require('./routes/voter');
 const voterApi = require('./api/voter');
 const Datastore = require('nedb');
-
+const path = require('path');
 
 var router = express.Router();
 var app = express();
@@ -86,7 +86,7 @@ var web3 = new Web3();
 var myContract;
 
 app.use((req, res, next) => {
-    if (web3.currentProvider == undefined) {
+    if (web3.currentProvider == null) {
         web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
         web3.eth.net.isListening().then(console.log);
         myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
@@ -102,12 +102,18 @@ app.use((req, res, next) => {
                             console.log("status approved", data.returnValues.voter);
                         }
                     });
+<<<<<<< HEAD
                     var db = new Datastore({
                         filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
                         autoload: true
                     });
                     db.remove({address: data.returnValues.voter}, {multi: false}, function(err, number) {
                         if(!err) console.log("removed data: ", number);
+=======
+
+                    config.db.remove({ address: data.returnValues.voter }, { multi: false }, function (err, number) {
+                        if (!err) console.log("removed data: ", number);
+>>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
                     });
 
                 })
@@ -121,19 +127,26 @@ app.use((req, res, next) => {
 });
 
 setInterval(function () {
+<<<<<<< HEAD
     var db = new Datastore({
         filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
         autoload: true
     });
     if (web3.eth.currentProvider) {
+=======
+
+    if (web3.currentProvider) {
+        console.log("hello in hash", Date.now());
+>>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
         var ethAddress;
-        db.findOne({ txHash: null }, function (err, doc) {
+        config.db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {
+                console.log("doc found");
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
-                        console.log(hash);        
-                        db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
+                        console.log(hash);
+                        config.db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
                     })
                     .on('confirmation', function (confNo, receipt) {
                         console.log(confNo);
@@ -149,7 +162,36 @@ setInterval(function () {
 
     }
 
-}, 10000);
+}, 1000);
+
+setInterval(function () {
+
+    if (web3.currentProvider) {
+        console.log("hello in 2 : ", Date.now());        
+        var ethAddress;
+        var tenMinutes = Date.now() - 600000;
+        config.db.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
+            if (doc) {
+                console.log(doc);
+                web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
+                    console.log(result);
+                    if (!err) {
+                        if (result) {
+                            if (result.status == "0x0") {
+                                config.db.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });
+                            }
+                        } else {
+                            config.db.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });
+                        }
+
+                    }
+                });
+            }
+
+        });
+    }
+
+}, 1000);
 
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {

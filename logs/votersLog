@@ -1,1 +1,7 @@
+<<<<<<< HEAD
+=======
+{"address":"0xda42AA2B11D815B61F41BE8B7A0629f6a8748eb5","txHash":null,"timestamp":1528813705592,"_id":"gfkQg9s7zc8FQofj"}
+{"$$deleted":true,"_id":"gfkQg9s7zc8FQofj"}
+{"address":"0xCE019337865fD029eB3D1bD2A8484AFec30f1B4b","txHash":null,"timestamp":1528814292724,"_id":"Y2Ge1y4FJaULq5Me"}
+>>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
 {"address":"0xCE019337865fD029eB3D1bD2A8484AFec30f1B4b","txHash":"0xa4f98b862eefbf40256ae047522c631ce91e8c2f8b03a49f5b98b63a87b4f884","timestamp":1528814293683,"_id":"Y2Ge1y4FJaULq5Me"}
