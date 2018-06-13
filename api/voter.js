@@ -37,13 +37,6 @@ router.post('/:id', function (req, res) {
 
 router.route('/')
     .post(function (req, res) {
-<<<<<<< HEAD
-        var db = new Datastore({
-            filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
-            autoload: true
-        });
-=======
->>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
         
         voterModel.find({ $or: [{ "formNo": req.body.formNo }, { "citizenshipNo": req.body.citizenshipNo }] }, function (err, result) {
             if (err) {

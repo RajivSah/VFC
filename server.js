@@ -102,18 +102,9 @@ app.use((req, res, next) => {
                             console.log("status approved", data.returnValues.voter);
                         }
                     });
-<<<<<<< HEAD
-                    var db = new Datastore({
-                        filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
-                        autoload: true
-                    });
-                    db.remove({address: data.returnValues.voter}, {multi: false}, function(err, number) {
-                        if(!err) console.log("removed data: ", number);
-=======
 
                     config.db.remove({ address: data.returnValues.voter }, { multi: false }, function (err, number) {
                         if (!err) console.log("removed data: ", number);
->>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
                     });
 
                 })
@@ -127,17 +118,9 @@ app.use((req, res, next) => {
 });
 
 setInterval(function () {
-<<<<<<< HEAD
-    var db = new Datastore({
-        filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
-        autoload: true
-    });
-    if (web3.eth.currentProvider) {
-=======
 
     if (web3.currentProvider) {
         console.log("hello in hash", Date.now());
->>>>>>> 6bf1086dd3e0f16597666a9159d0f07f542203b9
         var ethAddress;
         config.db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {

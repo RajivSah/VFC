@@ -9,6 +9,16 @@ module.exports.initialize=function(app) {
     app.post('/candidate/fptp/save', candidate.register);
 
 
+    app.use((req, res, next) => {
+        if (web3.currentProvider == undefined) {
+            web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
+            web3.eth.net.isListening().then(console.log);
+            myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
+        }
+        next();
+    });
+
+
 
    
   
