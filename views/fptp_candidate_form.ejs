@@ -1,5 +1,5 @@
 <div class="container form-container">
-    <form class="form-horizontal" data-toggle="validator" id="voter-form" method="post" action="">
+    <form class="form-horizontal" data-toggle="validator" id="voter-form" method="post" action="/candidate/fptp/save">
       <fieldset>
   
         <!-- Form Name -->
@@ -10,7 +10,7 @@
           <div class="form-group col-md-6">
               <label class="col-md-12 control-label" for="district">Candidate For</label>
               <div class="col-md-12">
-                <select required id="candidate_for" name="district" class="form-control" >
+                <select required id="election_selector" name="district" class="form-control" >
                     <option value="" selected  hidden>Choose One</option>
                   <option value="HOR">House of Representatives</option>
                   <option value="PA">Provisional Assembly</option>
@@ -24,10 +24,10 @@
             <div class="form-group col-md-6">
             <label class="col-md-12 control-label" for="district">District</label>
             <div class="col-md-12">
-              <select id="district" name="district" class="form-control" required="required" type="text">
-                  <option value="dist"selected disabled hidden>Choose One</option>
+              <select id="district_selector" name="district" class="form-control" required="required" type="text">
+                  <option value=""selected disabled hidden>Choose One</option>
                 <% districts.forEach(function(dist){ %>
-                  <option><%=dist.name %></option>
+                  <option><%=dist.district_name %></option>
                 <% }); %>
               </select>
               <div class="help-block with-errors"></div>
@@ -82,10 +82,11 @@
                     <label class="col-md-12 control-label" for="const_number">Constituenty Number (
                         निर्वाचन क्षेत्र)</label>
                     <div class="col-md-12">
-                      <select id="const_number" name="const_number" class="form-control">
-                        <option value="dist"selected disabled hidden>Choose One</option>
+                      <select id="constituency_selector" name="const_number" class="form-control" required>
+                        <option value=""selected disabled hidden>Choose One</option>
                         
                       </select>
+                      <div class="help-block with-errors"></div>
                     </div>
                   </div>
     
@@ -126,7 +127,7 @@
               <div class="form-group col-md-6">
                   <label class="col-md-12 control-label" for="fullName">Full Name of the Candidate in English</label>
                   <div class="col-md-12">
-                    <input id="fullName" name="fullName" placeholder="Enter Full Name in English" class="form-control input-md" required="" type="text">
+                    <input id="fullName_eng" name="fullName" placeholder="Enter Full Name in English" class="form-control input-md" required="" type="text">
                     <div class="help-block with-errors"></div>
                   </div>
                 </div>
@@ -138,7 +139,7 @@
               <div class="form-group col-md-6">
                 <label class="col-md-12 control-label" for="partyName">उम्मेदवारको पूरा नाम</label>
                 <div class="col-md-12">
-                  <input id="partyName" name="fullName" placeholder="नाम नेपालीमा" class="form-control input-md" required="" type="text">
+                  <input id="fullName_np" name="fullName" placeholder="नाम नेपालीमा" class="form-control input-md" required="" type="text">
                   <div class="help-block with-errors"></div>
                 </div>
               </div>
@@ -235,6 +236,69 @@
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+  <script>
+  $ (function() {
+
+//  Hide the Constituency Selector at the beginning. Only show it after selecting District and Election Category
+
+  var change=function(event){
+    var dist=$("#district_selector option:selected").text();
+    var type=$("#election_selector option:selected").text();
+    
+    
+    // Check if Option is selected.
+    if(dist=="Choose One" || type=="Choose One")
+        {
+          // alert("Invalid options in one of the selector.");
+          return;
+          
+        }
+   
+    // Show Constituency Selector and Populate it with Data
+    var const_selector=$('#constituency_selector');
+    const_selector.empty();
+
+    //  AJAX Query to get number of Constituency.
+    $.get('/get/district_const/'+dist).done(function(data){
+      const_selector.append($("<option>",{
+          value: '',
+          text: "Choose One"
+      }));
+      if(type=="House of Representatives")
+      {
+        // alert(data.no_of_Hor);
+            for( var i=1; i<=data.no_of_Hor; i++)
+          {
+            const_selector.append($('<option>', {
+              value: i,
+              text: i
+          }));
+          }
+     }
+      else{
+          for( var i=1; i<=data.no_of_Prov; i++)
+          {
+            const_selector.append($('<option>', {
+              value: i,
+              text: i
+          }));
+          }
+      } 
+    });
+  }
+
+  // Assigning onChnage evernt to both selectors.
+  change();
+  $('#district_selector').on('change', change);
+  $('#election_selector').on('change', change);
+});
+
+  
+  </script>
+  
+  
+  
+  
   <script>
     $(function () {
       var query = window.location.search;

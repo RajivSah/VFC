@@ -37,7 +37,7 @@ router.post('/:id', function (req, res) {
 router.route('/')
     .post(function (req, res) {
         var db = new Datastore({
-            filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+            filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
             autoload: true
         });
         
@@ -50,6 +50,7 @@ router.route('/')
                 res.redirect('/voter?id=' + result[0].id);
             } else {
                 var voterAddress = web3.eth.accounts.create();
+                console.log(voterAddress);
 
                 const hash = crypto.createHash('sha256');
                 hash.update(voterAddress.privateKey);

@@ -8,4 +8,4 @@ var dist_schem=new Schema({
 
 });
 
-module.exports=mongoose.model('Candidate', dist_schem);
+module.exports=mongoose.model('districts', dist_schem);

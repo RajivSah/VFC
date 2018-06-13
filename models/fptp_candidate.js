@@ -8,17 +8,17 @@ var fptp_candidateSchem=new Schema({
     candidateName_np: String, //
     candidateName_eng: String, //
     citizenshipNo: String, //
-    fatherName: String, //
+    fatherName: String, //S
     motherName: String, //
     dob: Date, //
-    gender: String,  //
+    sex: String,  //
     partyId: Number, //
     partyName: String, //
     symbolId: Number,
     symbolName: String, //
     symbolFileName: String,
     ethAddress: String,
-    pkHash: String        // HOR (House of Representative) or PA (public Assembly)  
+    // pkHash: String        // HOR (House of Representative) or PA (public Assembly)  
 
 
 });

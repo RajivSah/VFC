@@ -9,10 +9,10 @@ const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
-<<<<<<< HEAD
 var routes=require('./routes');
-var router = express.Router();var app = express();
-=======
+var router = express.Router();
+var app = express();
+
 const logger = require('./logger');
 const adminRoute = require('./routes/admin');
 const userApi = require('./api/user');
@@ -24,9 +24,8 @@ const Datastore = require('nedb');
 
 var router = express.Router();
 var app = express();
->>>>>>> 6c555c5f2b14b7b0650c89d10ce9ca878eb11c97
 var pk = null;
-routes.initialize(app);
+
 app.set('view engine', 'ejs');
 
 app.use('/plugins', express.static(__dirname + '/plugins'));
@@ -104,7 +103,7 @@ app.use((req, res, next) => {
                         }
                     });
                     var db = new Datastore({
-                        filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+                        filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
                         autoload: true
                     });
                     db.remove({address: data.returnValues.voter}, {multi: false}, function(err, number) {
@@ -123,7 +122,7 @@ app.use((req, res, next) => {
 
 setInterval(function () {
     var db = new Datastore({
-        filename: '/home/rajiv/Coding/vote-for-change/logs/votersLog',
+        filename: '/home/pi/Desktop/vote-for-change/logs/votersLog',
         autoload: true
     });
     if (web3.eth.currentProvider) {
@@ -217,3 +216,5 @@ app.listen(config.PORT, function (err) {
         console.log("Listening at PORT: ", config.PORT);
     }
 });
+
+routes.initialize(app);
