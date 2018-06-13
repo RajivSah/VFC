@@ -1,5 +1,5 @@
 <div class="container form-container">
-    <form class="form-horizontal" data-toggle="validator" id="voter-form" method="post" action="/candidate/fptp/save">
+    <form class="form-horizontal" data-toggle="validator" id="candidate-form" method="post" action="/candidate/fptp/save">
       <fieldset>
   
         <!-- Form Name -->
@@ -10,7 +10,7 @@
           <div class="form-group col-md-6">
               <label class="col-md-12 control-label" for="district">Candidate For</label>
               <div class="col-md-12">
-                <select required id="election_selector" name="district" class="form-control" >
+                <select required id="election_selector" name="election_selector" class="form-control" >
                     <option value="" selected  hidden>Choose One</option>
                   <option value="HOR">House of Representatives</option>
                   <option value="PA">Provisional Assembly</option>
@@ -24,10 +24,10 @@
             <div class="form-group col-md-6">
             <label class="col-md-12 control-label" for="district">District</label>
             <div class="col-md-12">
-              <select id="district_selector" name="district" class="form-control" required="required" type="text">
+              <select id="district_selector" name="district_selector" class="form-control" required="required" type="text">
                   <option value=""selected disabled hidden>Choose One</option>
                 <% districts.forEach(function(dist){ %>
-                  <option><%=dist.district_name %></option>
+                  <option value="<%=dist.district_name %>"><%=dist.district_name %></option>
                 <% }); %>
               </select>
               <div class="help-block with-errors"></div>
@@ -44,7 +44,7 @@
           <div class="form-group col-md-6">
               <label class="col-md-12 control-label" for="partyId">Party Id.</label>
               <div class="col-md-12">
-                <input id="partyId" name="formNo" placeholder="Enter the Party ID" class="form-control input-md" required="" type="number">
+                <input id="partyId" name="partyId" placeholder="Enter the Party ID" class="form-control input-md" required="" type="number">
                 <div class="help-block with-errors"></div>
               </div>
             </div>
@@ -79,10 +79,10 @@
                            
         
                 <div class="form-group col-md-6">
-                    <label class="col-md-12 control-label" for="const_number">Constituenty Number (
+                    <label class="col-md-12 control-label" for="constituency_selector">Constituenty Number (
                         निर्वाचन क्षेत्र)</label>
                     <div class="col-md-12">
-                      <select id="constituency_selector" name="const_number" class="form-control" required>
+                      <select id="constituency_selector" name="constituency_selector" class="form-control" required>
                         <option value=""selected disabled hidden>Choose One</option>
                         
                       </select>
@@ -110,7 +110,7 @@
                   <div class="form-group col-md-6">
                       <label class="col-md-12 control-label" for="election_img">Upload Election Symbol</label>
                       <div class="col-md-12">
-                          <input class="form-control" name="elect" type="file" id="election_img" required=''>
+                          <input class="form-control" name="symbolFileName" type="file" id="symbolFileName" required=''>
                         <div class="help-block with-errors"></div>
             
                       </div>
@@ -125,9 +125,9 @@
 
               <!-- Text input-->
               <div class="form-group col-md-6">
-                  <label class="col-md-12 control-label" for="fullName">Full Name of the Candidate in English</label>
+                  <label class="col-md-12 control-label" for="fullName_eng">Full Name of the Candidate in English</label>
                   <div class="col-md-12">
-                    <input id="fullName_eng" name="fullName" placeholder="Enter Full Name in English" class="form-control input-md" required="" type="text">
+                    <input id="fullName_eng" name="fullName_eng" placeholder="Enter Full Name in English" class="form-control input-md" required="" type="text">
                     <div class="help-block with-errors"></div>
                   </div>
                 </div>
@@ -137,9 +137,9 @@
       
               <!-- Text input-->
               <div class="form-group col-md-6">
-                <label class="col-md-12 control-label" for="partyName">उम्मेदवारको पूरा नाम</label>
+                <label class="col-md-12 control-label" for="fullName_np">उम्मेदवारको पूरा नाम</label>
                 <div class="col-md-12">
-                  <input id="fullName_np" name="fullName" placeholder="नाम नेपालीमा" class="form-control input-md" required="" type="text">
+                  <input id="fullName_np" name="fullName_np" placeholder="नाम नेपालीमा" class="form-control input-md" required="" type="text">
                   <div class="help-block with-errors"></div>
                 </div>
               </div>
@@ -229,7 +229,7 @@
       background-color: #F1F7FC;
     }
   
-    #voter-form {
+    #candidate-form {
       background-color: white;
       padding: 5%;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -244,7 +244,6 @@
   var change=function(event){
     var dist=$("#district_selector option:selected").text();
     var type=$("#election_selector option:selected").text();
-    
     
     // Check if Option is selected.
     if(dist=="Choose One" || type=="Choose One")
@@ -325,15 +324,29 @@
         }
         $.ajax({
           method: "GET",
-          url: "http://localhost:8001/api/voter" + query,
+          url: "http://localhost:8001/api/candidate/fptp_candidate" + query,
           beforeSend: function () {
             loadingPopup();
           },
           success: function (doc) {
             loadingPopdown();
-            $("#formNo").val(doc.formNo);
-            $("#fullName").val(doc.fullName);
-            var date = new Date(doc.DOB);
+            $("#election_selector").val(doc.electedfor);
+            $("#district_selector").val(doc.district);
+            $("#district_selector").trigger("change");
+            $("#constituency_selector").val(doc.constituency);
+            setTimeout(()=>{$("#constituency_selector").val(doc.constituency);}, 500);
+
+            $("#partyId").val(doc.partyId);
+            $("#partyName").val(doc.partyName);
+            $("#symbolName").val(doc.symbolName);
+            $("#citizenshipNo").val(doc.citizenshipNo);
+            $("#fullName_eng").val(doc.candidateName_eng);
+            $("#fullName_np").val(doc.candidateName_np);
+            $("#fatherName").val(doc.fatherName);
+            $("#motherName").val(doc.motherName);
+
+
+            var date = new Date(doc.dob);
             var day = ("0" + date.getDate()).slice(-2);
             var month = ("0" + (date.getMonth() + 1)).slice(-2);
             var onlyDate = date.getFullYear()+"-"+(month)+"-"+(day) ;
@@ -345,15 +358,10 @@
               console.log("female");
               $("#sex-1").prop('checked', true);
             }
-            $("#fatherName").val(doc.fatherName);
-            $("#motherName").val(doc.motherName);
-            $("#citizenshipNo").val(doc.citizenshipNo);
-            $("#district").val(doc.district);
-            $("#address").val(doc.address);
-            $("#nagarpalikaNo").val(doc.nagarpalikaNo);
+            
             $("#submitButton").html("Update");
-            $("#voter-form").attr('mehtod', 'put');
-            $("#voter-form").attr('action', '/api/voter/'+ doc._id);
+            $("#candidate-form").attr('mehtod', 'post');
+            $("#candidate-form").attr('action', '/candidate/fptp_candidate/'+ doc._id);
             
           },
           error: function (error) {

@@ -1,0 +1,84 @@
+<%- include('header', {title: "FPTP Candidate Information"});  -%>
+<script type="text/javascript" src="../plugins/QrCode/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../plugins/printElement/printThis.js"></script>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="col">
+                <!-- Navbar -->
+                <%- include('candidate_man_navbar');  -%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="container">
+                    <h4>Name:
+                        <%= candidate.candidateName_eng %>
+                    </h4>
+                    <h5>Elected for:
+                        <%= candidate.electedfor %>
+                    </h5>
+                    <h5>District:
+                        <%= candidate.district %>
+                    </h5>
+                    <h5>Constituency:
+                        <%= candidate.constituency %>
+                    </h5>
+                    <h5>Party ID:
+                        <%= candidate.partyId %>
+                    </h5>
+                    <h5>Party Name:
+                        <%= candidate.partyName %>
+                    </h5>
+                    <h5>Symbol Name:
+                        <%= candidate.symbolName %>
+                    </h5>
+                    <h5>Sex:
+                        <%= candidate.sex %>
+                    </h5>
+                    <h5>Father's Name:
+                        <%= candidate.fatherName %>
+                    </h5>
+                    <h5>Citizenship No:
+                        <%= candidate.citizenshipNo %>
+                    </h5>
+                    
+                                
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                const toast = swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "/notification",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.toNotify) {
+                            toast({
+                                type: response.type,
+                                title: response.message
+                            });
+                            $.ajax({
+                                method: "GET",
+                                url: '/clearNotification'
+                            });
+                        }
+
+                    }
+                });
+            });
+        </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+        

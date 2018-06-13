@@ -120,44 +120,44 @@ app.use((req, res, next) => {
 setInterval(function () {
 
     if (web3.currentProvider) {
-        console.log("hello in hash", Date.now());
+        // console.log("hello in hash", Date.now());
         var ethAddress;
         config.db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {
-                console.log("doc found");
+                // console.log("doc found");
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
-                        console.log(hash);
+                        // console.log(hash);
                         config.db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
                     })
                     .on('confirmation', function (confNo, receipt) {
-                        console.log(confNo);
+                        // console.log(confNo);
                     })
                     .on('receipt', function (receipt) {
-                        console.log("receipt received");
+                        // console.log("receipt received");
                     })
                     .on('error', function (error) {
-                        console.log(error);
+                        // console.log(error);
                     });
             }
         });
 
     }
 
-}, 1000);
+}, 5000);
 
 setInterval(function () {
 
     if (web3.currentProvider) {
-        console.log("hello in 2 : ", Date.now());        
+        // console.log("hello in 2 : ", Date.now());        
         var ethAddress;
         var tenMinutes = Date.now() - 600000;
         config.db.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
             if (doc) {
-                console.log(doc);
+                // console.log(doc);
                 web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
-                    console.log(result);
+                    // console.log(result);
                     if (!err) {
                         if (result) {
                             if (result.status == "0x0") {
