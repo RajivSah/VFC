@@ -1,5 +1,5 @@
-var candidate=require('./controllers/candidate_manager');
-var candidate_api=require('./api/candidate');
+var candidate=require('../controllers/candidate_manager');
+var candidate_api=require('../api/candidate');
 
 module.exports.initialize=function(app) {
     app.get('/candidate', candidate.index);                                                     // Candidate Homepage

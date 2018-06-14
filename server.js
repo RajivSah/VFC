@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
-var routes=require('./routes');
+var routes=require('./routes/fptp_candidate');
 var router = express.Router();
 var app = express();
 
@@ -120,17 +120,9 @@ app.use((req, res, next) => {
 setInterval(function () {
 
     if (web3.currentProvider) {
-<<<<<<< HEAD
-        // console.log("hello in hash", Date.now());
         var ethAddress;
         config.db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {
-                // console.log("doc found");
-=======
-        var ethAddress;
-        config.db.findOne({ txHash: null }, function (err, doc) {
-            if (doc) {
->>>>>>> 4d0b1131b0a17a1d48d668d29bb6128162f4f8d0
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
@@ -156,21 +148,11 @@ setInterval(function () {
 setInterval(function () {
 
     if (web3.currentProvider) {
-<<<<<<< HEAD
-        // console.log("hello in 2 : ", Date.now());        
-=======
->>>>>>> 4d0b1131b0a17a1d48d668d29bb6128162f4f8d0
         var ethAddress;
         var tenMinutes = Date.now() - 60000;
         config.db.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
             if (doc) {
-<<<<<<< HEAD
-                // console.log(doc);
                 web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
-                    // console.log(result);
-=======
-                web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
->>>>>>> 4d0b1131b0a17a1d48d668d29bb6128162f4f8d0
                     if (!err) {
                         if (result) {
                             if (result.status == "0x0") {
