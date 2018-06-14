@@ -140,7 +140,7 @@ setInterval(function () {
 
     }
 
-}, 1000);
+}, 5000);
 
 setInterval(function () {
 
@@ -169,7 +169,7 @@ setInterval(function () {
         });
     }
 
-}, 1000);
+}, 5000);
 
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
