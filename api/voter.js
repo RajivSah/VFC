@@ -4,7 +4,7 @@ const Web3 = require('web3');
 const config = require('../config');
 const crypto = require('crypto');
 const setNotification = require('../notification');
-var Datastore = require('nedb');
+// var Datastore = require('nedb');
 var path = require('path');
 
 var web3 = new Web3();
@@ -24,7 +24,7 @@ router.use((req, res, next) => {
 router.post('/:id', function (req, res) {
     var updatedInfo = req.body;
     delete updatedInfo.submit;
-    voterModel.finconfig.dbyIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
+    voterModel.findbyIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
         if (!err) {
             setNotification(req, true, "success", "Voter updated Successfully");
             res.redirect('/voter/manage');
@@ -85,7 +85,7 @@ router.route('/')
     })
     .get(function (req, res) {
         if (req.query.id) {
-            voterModel.finconfig.dbyId(req.query.id, function (err, doc) {
+            voterModel.findbyId(req.query.id, function (err, doc) {
                 if (!err) {
                     res.json(doc);
                 } else {
@@ -108,7 +108,7 @@ router.route('/')
 
     })
     .delete(function (req, res) {
-        voterModel.finconfig.dbyIdAndRemove(req.body.id, function (err, result) {
+        voterModel.findbyIdAndRemove(req.body.id, function (err, result) {
             if (!err) {
                 res.send(result);
             } else {
