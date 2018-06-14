@@ -9,6 +9,10 @@ const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
+var routes=require('./routes/fptp_candidate');
+var router = express.Router();
+var app = express();
+
 const logger = require('./logger');
 const adminRoute = require('./routes/admin');
 const userApi = require('./api/user');
@@ -21,6 +25,7 @@ const path = require('path');
 var router = express.Router();
 var app = express();
 var pk = null;
+
 app.set('view engine', 'ejs');
 
 app.use('/plugins', express.static(__dirname + '/plugins'));
@@ -121,17 +126,17 @@ setInterval(function () {
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
-                        console.log(hash);
+                        // console.log(hash);
                         config.db.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
                     })
                     .on('confirmation', function (confNo, receipt) {
-                        console.log(confNo);
+                        // console.log(confNo);
                     })
                     .on('receipt', function (receipt) {
-                        console.log("receipt received");
+                        // console.log("receipt received");
                     })
                     .on('error', function (error) {
-                        console.log(error);
+                        // console.log(error);
                     });
             }
         });
@@ -231,3 +236,5 @@ app.listen(config.PORT, function (err) {
         console.log("Listening at PORT: ", config.PORT);
     }
 });
+
+routes.initialize(app);
