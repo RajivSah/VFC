@@ -115,11 +115,9 @@ app.use((req, res, next) => {
 setInterval(function () {
 
     if (web3.currentProvider) {
-        console.log("hello in hash", Date.now());
         var ethAddress;
         config.db.findOne({ txHash: null }, function (err, doc) {
             if (doc) {
-                console.log("doc found");
                 ethAddress = doc.address;
                 myContract.methods.addVoter(ethAddress).send({ from: config.OWNER_ADDRESS })
                     .on('transactionHash', function (hash) {
@@ -145,14 +143,11 @@ setInterval(function () {
 setInterval(function () {
 
     if (web3.currentProvider) {
-        console.log("hello in 2 : ", Date.now());        
         var ethAddress;
-        var tenMinutes = Date.now() - 600000;
+        var tenMinutes = Date.now() - 60000;
         config.db.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
             if (doc) {
-                console.log(doc);
                 web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
-                    console.log(result);
                     if (!err) {
                         if (result) {
                             if (result.status == "0x0") {
