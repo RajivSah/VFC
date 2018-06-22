@@ -1,1 +1,1 @@
-geth --rinkeby --ws --rpc --wsorigins="*"
+geth --rinkeby --ws --rpc --wsorigins="*" syncmode=full
