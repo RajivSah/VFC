@@ -58,6 +58,10 @@
                         <script>
                             $("#qrcode").qrcode("<%= pk %>");
                             var canvas = $("#qrcode canvas");
+                            var data = {
+                                pk: $("#qrcode").html()
+                            }
+                            console.log(canvas);
                             var image = canvas[0].toDataURL('image/png');
                             console.log(image)
                             $("#qrImage").attr('src', image);
