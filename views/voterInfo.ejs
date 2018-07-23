@@ -56,8 +56,12 @@
                     <button id="printQr" class="btn btn-success" style="display: none;">Print</button>
                     <% if(pk) { %>
                         <script>
-                            $("#qrcode").qrcode("<%= pk %>");
+                            $("#qrcode").qrcode('{"pk":"<%= pk %>"}');
                             var canvas = $("#qrcode canvas");
+                            var data = {
+                                pk: $("#qrcode").html()
+                            }
+                            console.log(canvas);
                             var image = canvas[0].toDataURL('image/png');
                             console.log(image)
                             $("#qrImage").attr('src', image);
