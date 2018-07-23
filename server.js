@@ -18,6 +18,7 @@ const adminRoute = require('./routes/admin');
 const userApi = require('./api/user');
 const loginRoute = require('./routes/login');
 const voterRoute = require('./routes/voter');
+const votingRoute = require('./routes/voting');
 const voterApi = require('./api/voter');
 const Datastore = require('nedb');
 const path = require('path');
@@ -88,7 +89,6 @@ var myContract;
 app.use((req, res, next) => {
     if (web3.currentProvider == null) {
         web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
-        web3.eth.net.isListening().then(console.log);
         myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
 
         fs.readFile('./logs/tokenTransfer.log', function (err, data) {
@@ -136,7 +136,7 @@ setInterval(function () {
                         // console.log("receipt received");
                     })
                     .on('error', function (error) {
-                        // console.log(error);
+                        console.log(error);
                     });
             }
         });
@@ -219,6 +219,7 @@ app.use('/admin', adminRoute);
 app.use('/api/users', userApi);
 app.use('/voter', voterRoute);
 app.use('/api/voter', voterApi);
+app.use('/voting', votingRoute);
 
 
 app.get('/logout', (req, res) => {

@@ -56,7 +56,7 @@
                     <button id="printQr" class="btn btn-success" style="display: none;">Print</button>
                     <% if(pk) { %>
                         <script>
-                            $("#qrcode").qrcode("<%= pk %>");
+                            $("#qrcode").qrcode('{"pk":"<%= pk %>"}');
                             var canvas = $("#qrcode canvas");
                             var data = {
                                 pk: $("#qrcode").html()
