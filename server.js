@@ -10,6 +10,8 @@ const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
 var routes=require('./routes/fptp_candidate');
+var pr_candidate_routes=require('./routes/pr_candidate_routes');
+var party_routes=require('./routes/party_routes');
 var router = express.Router();
 var app = express();
 
@@ -235,6 +237,10 @@ app.listen(config.PORT, function (err) {
     if (!err) {
         console.log("Listening at PORT: ", config.PORT);
     }
+    else
+        throw err;
 });
 
 routes.initialize(app);
+pr_candidate_routes.initialize(app);
+party_routes.initialize(app);
