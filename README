@@ -1,1 +1,4 @@
 geth --rinkeby --ws --rpc --wsorigins="*" --syncmode=full
+
+geth --rinkeby --ws --rpc --wsorigins="*" --syncmode=full --wsapi="web3, personal,eth,network,db"
+
