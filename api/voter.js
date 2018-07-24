@@ -23,7 +23,7 @@ router.use((req, res, next) => {
 router.post('/:id', function (req, res) {
     var updatedInfo = req.body;
     delete updatedInfo.submit;
-    voterModel.findbyIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
+    voterModel.findByIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
         if (!err) {
             setNotification(req, true, "success", "Voter updated Successfully");
             res.redirect('/voter/manage');
@@ -84,7 +84,7 @@ router.route('/')
     })
     .get(function (req, res) {
         if (req.query.id) {
-            voterModel.findbyId(req.query.id, function (err, doc) {
+            voterModel.findById(req.query.id, function (err, doc) {
                 if (!err) {
                     res.json(doc);
                 } else {
@@ -107,7 +107,7 @@ router.route('/')
 
     })
     .delete(function (req, res) {
-        voterModel.findbyIdAndRemove(req.body.id, function (err, result) {
+        voterModel.findByIdAndRemove(req.body.id, function (err, result) {
             if (!err) {
                 res.send(result);
             } else {

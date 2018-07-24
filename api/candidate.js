@@ -1,5 +1,6 @@
 var district_model=require('../models/districts');
 var fptp_candidate_model=require('../models/fptp_candidate');
+var pr_candidate_model=require('../models/pr_candidates');
 var ObjectID=require('mongodb').ObjectID;
 const voterModel = require('../models/voters');
 
@@ -40,5 +41,28 @@ module.exports={
            
         res.json(docs);
     });
+    },
+
+    get_pr_candidate_list:function(req,res)
+    {
+        pr_candidate_model.find(function(err,docs){
+            res.json(docs);
+        });
+    },
+    get_pr_candidate_info:function(req,res){
+        if(req.query.id)
+        {
+            console.log(req.query.id);
+            pr_candidate_model.findById( req.query.id, function(err, doc){
+                if (!err) {
+                    res.json(doc);
+                    console.log(doc);
+                } else {
+                    res.status(500).send(err).end();
+                }
+            });
+            
+        }
+
     }
 };
