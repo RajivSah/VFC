@@ -1,0 +1,89 @@
+<%- include('header', {title: "Vote for Change"});  -%>
+    <link rel="stylesheet" href="../plugins/QRScanner/style.css">
+    <div class='container'>
+        <h1>Vote For Change</h1>
+        <h3>Scan your QR to continue</h3>
+        <video id="preview"></video>
+
+    </div>
+    <script src="https://unpkg.com/sweetalert2@7.21.1/dist/sweetalert2.all.js"></script>
+    <script type="text/javascript" src="../plugins/QRScanner/instascan.min.js"></script>
+    <script src="../plugins//sha256/jquery.sha256.min.js"></script>
+    <script type="text/javascript">
+        const toast = swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        var audio = new Audio('../plugins/QRScanner/beep.mp3');
+
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        function IsJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+        scanner.addListener('scan', function (content) {
+            audio.play();
+            var data;
+            if (!IsJsonString(content)) {
+                toast({
+                    type: "error",
+                    title: "Error! Invalid QR"
+                });
+            } else {
+                data = JSON.parse(content);
+                var hash = $.sha256(data.pk);
+                validateVoter(hash);
+            }
+
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+
+        var loadingPopup = function () {
+            swal({
+                text: "loading...",
+                onOpen: function () {
+                    swal.showLoading();
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false
+            });
+        }
+        var loadingPopdown = function () {
+            swal.close();
+        }
+
+        var validateVoter = function (pkHash) {
+            var data = {
+                "pkHash": pkHash
+            };
+            console.log(data);
+            $.ajax({
+                method: "POST",
+                url: "/voting/validateUser",
+                data: data,
+                beforeSend: function () {
+                    loadingPopup();
+                },
+                success: function (validated) {
+                    console.log(validated);
+                    loadingPopdown();
+                }
+            });
+        }
+    </script>
+    <%- include('footer'); -%>
