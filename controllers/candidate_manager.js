@@ -55,9 +55,9 @@ module.exports={
                 // console.log(candidateAddress);
                 
                 fptp_candidate_model.create({
-                    district: req.body.district_selector, 
+                    district: req.body.district, 
                     constituency: req.body.constituency_selector,
-                    electedfor: req.body.election_selector ,
+                    electedfor: req.body.electedfor ,
                     candidateName_np: req.body.candidateName_np, 
                     candidateName_eng: req.body.candidateName_eng,
                     citizenshipNo: req.body.citizenshipNo,
@@ -129,6 +129,7 @@ module.exports={
         var updatedInfo=req.body;
         delete updatedInfo.submit;
         console.log(req.body);
+        console.log(req.params.id);
         fptp_candidate_model.findByIdAndUpdate(req.params.id, updatedInfo, function(err, result){
             if (!err) {
                 setNotification(req, true, "success", "Voter updated Successfully");
