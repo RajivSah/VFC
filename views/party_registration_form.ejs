@@ -1,0 +1,167 @@
+<div class="container form-container">
+    <form class="form-horizontal" data-toggle="validator" id="party-form" method="post" action="/party/save">
+      <fieldset>
+  
+        <!-- Form Name -->
+        <legend>Party Registration</legend>
+  
+        <div class="form-row">
+
+            <!-- Text input-->
+          <div class="form-group col-md-6">
+              <label class="col-md-12 control-label" for="partyId">Party Id.</label>
+              <div class="col-md-12">
+                <input id="partyId" name="partyID" placeholder="Enter the Party ID" class="form-control input-md" required="" type="number">
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+          
+            
+  
+            
+    
+            <!-- Text input-->
+            <div class="form-group col-md-6">
+                <label class="col-md-12 control-label" for="partyName">Party Name</label>
+                <div class="col-md-12">
+                  <input id="partyName" name="name" placeholder="Enter Party Name" class="form-control input-md" required="" type="text">
+                  <div class="help-block with-errors"></div>
+                </div>
+              </div>
+
+          </div>
+
+
+          <div class="form-row">
+
+              <!-- Text input-->
+              <div class="form-group col-md-6">
+                  <label class="col-md-12 control-label" for="symbolName">Election Symbol (English) </label>
+                  <div class="col-md-12">
+                    <input id="symbolNameEnglish" name="symbolEnglish" placeholder="Name of the Symbol" class="form-control input-md" required="" type="text">
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+              
+                           
+        
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="symbolName">Election Symbol (Nepali) </label>
+                    <div class="col-md-12">
+                      <input id="symbolNameNepali" name="symbolNepali" placeholder="Name of the Symbol" class="form-control input-md" required="" type="text">
+                      <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="form-row">
+                <!-- Upload Symbol -->
+                <div class="form-group col-md-6">
+                        <label class="col-md-12 control-label" for="election_img">Upload Election Symbol</label>
+                        <div class="col-md-12">
+                            <input class="form-control" name="symbolFileName" type="file" id="symbolFileName" required=''>
+                          <div class="help-block with-errors"></div>
+              
+                        </div>
+                </div>
+            
+
+            </div>
+            
+
+                  
+          
+
+
+
+          
+
+  
+        
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-12 control-label" for="submit"></label>
+          <div class="col-md-12">
+            <button id="submitButton" type="submit" name="submit" class="btn btn-primary">Register</button>
+          </div>
+        </div>
+  
+      </fieldset>
+    </form>
+  </div>
+  
+  
+  <style>
+    .with-errors {
+      height: 20px;
+      font-size: 90%;
+      color: red;
+    }
+  
+    .form-container {
+      padding: 8%;
+      background-color: #F1F7FC;
+    }
+  
+    #candidate-form {
+      background-color: white;
+      padding: 5%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+
+  <script>
+      $(function () {
+        var query = window.location.search;
+        const toast = swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        if (query) {
+          var loadingPopup = function () {
+            swal({
+              text: "loading...",
+              onOpen: function () {
+                swal.showLoading();
+              },
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: false
+            });
+          }
+          var loadingPopdown = function () {
+            swal.close();
+          }
+          $.ajax({
+            method: "GET",
+            url: "http://localhost:8001/api/party_info" + query,
+            beforeSend: function () {
+              loadingPopup();
+            },
+            success: function (doc) {
+              loadingPopdown();
+              $("#partyId").val(doc.partyID);
+              $("#partyName").val(doc.name);
+              $("#symbolNameEnglish").val(doc.symbolEnglish);
+              $("#symbolNameNepali").val(doc.symbolNepali); 
+              $("#submitButton").html("Update");
+              $("#party-form").attr('action', '/party/update'+ query);
+              
+              
+            },
+            error: function (error) {
+              loadingPopdown();
+              toast({
+                type: "error",
+                title: "Error! Try again later"
+              });
+            }
+          });
+        }
+        
+      });
+    </script>

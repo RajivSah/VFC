@@ -1,0 +1,41 @@
+<%- include('header', {title: "PR Candidate Edit"});  -%>
+<link rel="stylesheet" href="../plugins/multiSelect/css/multi-select.css">
+    </head>
+
+    <body>
+        <%- include('candidate_man_navbar'); -%>
+            <div class="container">
+              <video id="preview"></video>
+                <%- include('pr_candidate_form'); -%>
+            </div>
+            <script>
+                $(function () {
+                    const toast = swal.mixin({
+                        toast: true,
+                        position: 'bottom-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    $.ajax({
+                        method: "GET",
+                        url: "/notification",
+                        success: function (response) {
+                            if (response.toNotify) {
+                                toast({
+                                    type: response.type,
+                                    title: response.message
+                                });
+                                $.ajax({
+                                    method: "GET",
+                                    url: '/clearNotification'
+                                });
+                            }
+                        }
+                    });
+                });
+            </script>
+            <script src="https://unpkg.com/sweetalert2@7.21.1/dist/sweetalert2.all.js"></script>
+            
+
+
+    </body>

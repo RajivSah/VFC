@@ -1,0 +1,75 @@
+<%- include('header', {title: "Party Information"});  -%>
+<script type="text/javascript" src="../plugins/QrCode/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="../plugins/printElement/printThis.js"></script>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="col">
+                <!-- Navbar -->
+                <%- include('candidate_man_navbar');  -%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="container">
+                    <h4>Party Name:
+                        <%= party.name %>
+                    </h4>
+                    <h5>Party ID:
+                        <%= party.partyID %>
+                    </h5>
+
+                    <h5>Election Symbol (English):
+                        <%= party.symbolEnglish %>
+                    </h5>
+
+                    <h5>Election Symbol (Nepali):
+                        <%= party.symbolNepali %>
+                    </h5>
+
+                    <h5>PR Ethereum Address:
+                        <%= party.prEthAddress %>
+                    </h5>
+                    <h5>HOR Ethereum Address:
+                        <%= party.HOREthAddress %>
+                    </h5>
+                    
+                                
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                const toast = swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "/notification",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.toNotify) {
+                            toast({
+                                type: response.type,
+                                title: response.message
+                            });
+                            $.ajax({
+                                method: "GET",
+                                url: '/clearNotification'
+                            });
+                        }
+
+                    }
+                });
+            });
+        </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+        
