@@ -10,7 +10,7 @@
           <div class="form-group col-md-6">
               <label class="col-md-12 control-label" for="district">Candidate For</label>
               <div class="col-md-12">
-                <select required id="election_selector" name="election_selector" class="form-control" >
+                <select required id="electedfor" name="electedfor" class="form-control" >
                     <option value="" selected  hidden>Choose One</option>
                   <option value="HOR">House of Representatives</option>
                   <option value="PA">Provisional Assembly</option>
@@ -24,7 +24,7 @@
             <div class="form-group col-md-6">
             <label class="col-md-12 control-label" for="district">District</label>
             <div class="col-md-12">
-              <select id="district_selector" name="district_selector" class="form-control" required="required" type="text">
+              <select id="district" name="district" class="form-control" required="required" type="text">
                   <option value=""selected disabled hidden>Choose One</option>
                 <% districts.forEach(function(dist){ %>
                   <option value="<%=dist.district_name %>"><%=dist.district_name %></option>
@@ -242,8 +242,8 @@
 //  Hide the Constituency Selector at the beginning. Only show it after selecting District and Election Category
 
   var change=function(event){
-    var dist=$("#district_selector option:selected").text();
-    var type=$("#election_selector option:selected").text();
+    var dist=$("#district option:selected").text();
+    var type=$("#electedfor option:selected").text();
     
     // Check if Option is selected.
     if(dist=="Choose One" || type=="Choose One")
@@ -288,8 +288,8 @@
 
   // Assigning onChnage evernt to both selectors.
   change();
-  $('#district_selector').on('change', change);
-  $('#election_selector').on('change', change);
+  $('#district').on('change', change);
+  $('#electedfor').on('change', change);
 });
 
   
@@ -330,9 +330,9 @@
           },
           success: function (doc) {
             loadingPopdown();
-            $("#election_selector").val(doc.electedfor);
-            $("#district_selector").val(doc.district);
-            $("#district_selector").trigger("change");
+            $("#electedfor").val(doc.electedfor);
+            $("#district").val(doc.district);
+            $("#district").trigger("change");
             $("#constituency_selector").val(doc.constituency);
             setTimeout(()=>{$("#constituency_selector").val(doc.constituency);}, 500);
 
@@ -360,7 +360,7 @@
             }
             
             $("#submitButton").html("Update");
-            $("#candidate-form").attr('mehtod', 'post');
+            $("#candidate-form").attr('method', 'post');
             $("#candidate-form").attr('action', '/candidate/fptp_candidate/'+ doc._id);
             
           },
