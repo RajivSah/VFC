@@ -263,7 +263,7 @@
           setTimeout(()=>{$("#constituency_selector").val(doc.constituency);}, 500);
           var parties=[];
           doc.parties.forEach(function(party){ 
-            parties.push("{ _id: "+party.id+", name: '"+party.name+"' }");
+            parties.push("{ _id: "+party._id+", name: '"+party.name+"' }");
             
           });
           //parties.push("{ _id: 5b2e73e11751e950df12f2b3, name: 'Nepali Congress' }");

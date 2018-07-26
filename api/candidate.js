@@ -38,7 +38,6 @@ module.exports={
     get_fptp_candidate_list: function(req, res)
     {
         fptp_candidate_model.find(function(err, docs){
-           
         res.json(docs);
     });
     },
@@ -53,14 +52,16 @@ module.exports={
         if(req.query.id)
         {
             console.log(req.query.id);
-            pr_candidate_model.findById( req.query.id, function(err, doc){
+            pr_candidate_model.findById( req.query.id).populate('parties').exec(function(err,doc){
                 if (!err) {
                     res.json(doc);
-                    console.log(doc);
+                    //console.log(doc.parties[0].name);
                 } else {
                     res.status(500).send(err).end();
                 }
+
             });
+            
             
         }
 

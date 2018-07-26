@@ -53,12 +53,8 @@ module.exports={
         var i;
         for(i=0;i<partyStr.length;i++){
                    
-            var party={
-                "id":partyStr[i].split(',')[0].split('_id:')[1].replace(/\s/,''),
-                "name":partyStr[i].split(',')[1].split('name:')[1].split('}')[0].replace(/'/g,'').replace(/\s/,'').replace(/\s([^\s]*)$/,'$1')
-            }
-            candidates.parties.push(party);
-
+            var party_id=partyStr[i].split(',')[0].split('_id:')[1].replace(/\s/,'');
+            candidates.parties.push(party_id);
         }
         
         //console.log(candidates);
@@ -76,8 +72,9 @@ module.exports={
                 
             }
             else if(result.length){
-                console.log("Candidate already registered");
+                
                 setNotification(req,true,"error","Candidate Already Registered");
+                console.log("Candidate already registered");
             }
             else{
                 
@@ -105,7 +102,8 @@ module.exports={
         var viewModel={
             candidate : {}
         };
-        pr_candidate_model.findById( req.query.id, function(err, doc){
+        pr_candidate_model.findById( req.query.id).populate('parties').exec(function(err,doc){
+            console.log(doc);
             viewModel.candidate=doc;
             res.render('pr_candidate_info', viewModel);
 
@@ -182,19 +180,19 @@ module.exports={
             "constituency":req.body.constituency,
             "parties":[]
           };
-          var parties=[];
-          candidates.parties=parties;
+          //var parties=[];
+          //candidates.parties=parties;
         
         var partiesStr=(JSON.stringify(req.body.party)).replace(/\\r|\\n/g,'');
         var partyStr=partiesStr.split('",');
         var i;
         for(i=0;i<partyStr.length;i++){
                    
-            var party={
+            /*var party={
                 "id":partyStr[i].split(',')[0].split('_id:')[1].replace(/\s/,''),
                 "name":partyStr[i].split(',')[1].split('name:')[1].split('}')[0].replace(/'/g,'').replace(/\s/,'').replace(/\s([^\s]*)$/,'$1')
-            }
-            candidates.parties.push(party);
+            }*/
+            candidates.parties.push(partyStr[i].split(',')[0].split('_id:')[1].replace(/\s/,''));
 
         }
         
@@ -212,6 +210,20 @@ module.exports={
             }
         });
         
+       
+    },
+
+    test:function(req,res){
+        var cand=[];
+        pr_candidate_model.find({electedfor:'PA',district:'Taplejung',constituency:1}).
+        populate('parties').
+        exec(function(err,candidate){
+            if(err)
+                return err;
+            
+            console.log(candidate);
+            res.send(candidate);
+        });
        
     }
 }
