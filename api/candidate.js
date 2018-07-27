@@ -44,8 +44,8 @@ module.exports={
 
     get_pr_candidate_list:function(req,res)
     {
-        pr_candidate_model.find(function(err,docs){
-            res.json(docs);
+        pr_candidate_model.find().populate('parties').exec(function(err,doc){
+            res.json(doc);
         });
     },
     get_pr_candidate_info:function(req,res){

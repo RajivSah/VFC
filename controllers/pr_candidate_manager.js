@@ -16,21 +16,22 @@ module.exports={
                 throw err;
 
             viewModel.districts=dists;
+            model_party.find({},'name',function(err,parties){
+                if (err){
+                    throw err;
+                }
+                else{
+                    viewModel.parties=parties;
+                    console.log(parties);
+                    
+                    res.render('pr_candidate_register',viewModel);
+    
+                }
+            });
             
         });
 
-        model_party.find({},'name',function(err,parties){
-            if (err){
-                throw err;
-            }
-            else{
-                viewModel.parties=parties;
-                console.log(parties);
-                
-                res.render('pr_candidate_register',viewModel);
-
-            }
-        });
+        
 
     },
 
@@ -38,7 +39,7 @@ module.exports={
         
         //***********JSON FOR CANDIDATE ************************
 
-        
+        console.log(req.body);
        var candidates={
             "electedFor":req.body.electedfor,
             "district":req.body.district,
@@ -88,7 +89,7 @@ module.exports={
                         res.status(500).send(error).end();
                     else{
                         setNotification(req, true, "success", "Candidate has beem registered.");
-                        res.redirect('/pr_candidate/register');
+                        res.redirect('/pr_candidate/manage');
                     }
                 });
 
@@ -133,31 +134,33 @@ module.exports={
 
             viewModel.districts=dists;
             
-        });
-        
-        model_party.find({},'name',function(err,parties){
-            if (err){
-                throw err;
-            }
-            else{
-                viewModel.parties=parties;
-                
-            }
-        });
-        
-        pr_candidate_model.findById(req.query.id,function(err,cand){
-            if (err){
-                throw err;
-            }
-            else{
-                viewModel.candidates=cand;
-                //console.log(viewModel);
-                res.render('pr_candidate_update',viewModel);
-
-            }
-                
+            model_party.find({},'name',function(err,parties){
+                if (err){
+                        throw err;
+                    }
+                else{
+                    viewModel.parties=parties;
+                    pr_candidate_model.findById(req.query.id,function(err,cand){
+                        if (err){
+                            throw err;
+                        }
+                        else{
+                            viewModel.candidates=cand;
+                            //console.log(viewModel);
+                            res.render('pr_candidate_update',viewModel);
+            
+                        }                            
+                        
+                    });
+                        
+                }
+            });           
             
         });
+        
+       
+        
+        
     },
 
     delete: function(req, res){
@@ -175,7 +178,7 @@ module.exports={
         var url=req.url.split("id=");
         var id=url[1];
         var candidates={
-            "electedFor":req.body.electedfor,
+            "electedfor":req.body.electedfor,
             "district":req.body.district,
             "constituency":req.body.constituency,
             "parties":[]
