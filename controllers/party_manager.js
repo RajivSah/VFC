@@ -5,7 +5,7 @@ var web3=new Web3();
 
 module.exports={
     register:function(req,res){
-        //console.log(req.body);
+        console.log(req.body);
         party_model.find({$or:[ {'partyID':req.body.partyID}, {'name':req.body.name}]},function(err,result){
             if(err){
                 res.status[500].send(error).end();

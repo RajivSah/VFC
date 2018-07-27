@@ -109,7 +109,10 @@
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
   </style>
+  
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+  
   <script>
   $ (function() {
 
@@ -225,7 +228,7 @@
 
 
 <script>
-  $(function () {
+  $(document).ready(function() {
     var query = window.location.search;
     const toast = swal.mixin({
       toast: true,
@@ -263,10 +266,12 @@
           setTimeout(()=>{$("#constituency_selector").val(doc.constituency);}, 500);
           var parties=[];
           doc.parties.forEach(function(party){ 
-            parties.push("{ _id: "+party.id+", name: '"+party.name+"' }");
+            parties.push("{ _id: "+party._id+", name: '"+party.name+"' }");
             
           });
-          //parties.push("{ _id: 5b2e73e11751e950df12f2b3, name: 'Nepali Congress' }");
+
+           
+          //parties.push("{ _id: 5b53e7e22dc6e53527f5673b, name: 'Rastriya Prajatantra Party' }");
           //parties.push("{ _id: 5b2e740e1751e950df12f2b4, name: 'UML' }");
           //$('#pre-selected-options').multiSelect('select',"{ _id: 5b2e73e11751e950df12f2b3, name: 'Nepali Congress' }");
           $('#pre-selected-options').multiSelect('select',parties);
