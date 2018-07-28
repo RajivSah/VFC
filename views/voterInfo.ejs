@@ -38,6 +38,12 @@
                     <h5>Account Address:
                         <%= voter.ethAddress %>
                     </h5>
+                    <h5>HOR number:
+                        <%= voter.constituency1 %>
+                    </h5>
+                    <h5>PR number:
+                        <%= voter.constituency2 %>
+                    </h5>
                     <h5>Status:
                         <% if (voter.tokenTransferred) { %>
                             OK

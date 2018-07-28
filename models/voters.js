@@ -12,6 +12,8 @@ var voterSchem = new Schema({
         voted: Boolean,
         district: String,
         address: String,
+        constituency1: Number,
+        constituency2: Number,
         ethAddress: String,
         nagarpalikaNo: String,
         pkHash: String,

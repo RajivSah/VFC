@@ -182,6 +182,7 @@
           </div>
         </div>
 
+
         <!-- Text input-->
         <div class="form-group col-md-6">
           <label class="col-md-12 control-label" for="nagarpalikaNo">Nagarpalika No.</label>
@@ -193,6 +194,31 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="constituency1">Constituency(HOR)</label>
+          <div class="col-md-12">
+            <input id="constituency1" name="constituency1" placeholder="Enter the HOR number" class="form-control input-md" required=""
+              type="number">
+            <div class="help-block with-errors"></div>
+
+          </div>
+
+        </div>
+        <div class="form-group col-md-6">
+          <label class="col-md-12 control-label" for="constituency2">Constituency(PR)</label>
+          <div class="col-md-12">
+            <input id="constituency2" name="constituency2" placeholder="Enter the PR number" class="form-control input-md" required=""
+              type="number">
+            <div class="help-block with-errors"></div>
+
+          </div>
+
+        </div>
+      
+      
       </div>
 
       <!-- Button -->
@@ -279,6 +305,8 @@
           $("#district").val(doc.district);
           $("#address").val(doc.address);
           $("#nagarpalikaNo").val(doc.nagarpalikaNo);
+          $("#constituency1").val(doc.constituency1);
+          $("#constituency2").val(doc.constituency2);
           $("#submitButton").html("Update");
           $("#voter-form").attr('mehtod', 'put');
           $("#voter-form").attr('action', '/api/voter/'+ doc._id);
