@@ -105,7 +105,7 @@ module.exports={
                                 partyId: req.body.partyId, 
                                 partyName:req.body.partyName,
                                 symbolId: 1,
-                                symbolName: "Nepali Flag",
+                                symbolName: req.body.symbolName,
                                 symbolFileName: imgUrl+ext,
                                 ethAddress: candidateAddress.address,
                                 registered: false
