@@ -1,12 +1,12 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose=require('mongoose');
+var Schema=mongoose.Schema;
 
-var boothSchema = new Schema({
-    state: Number,
-    district: String,
-    region: Number,
+var booth=new Schema({
+    boothAddress:String,
+    district:String,
+    constituency:Number
 });
 
-var model = mongoose.model('booth', configSchema);
+var model=mongoose.model('booth_model', booth);
+module.exports=model;
 
-module.exports = model;

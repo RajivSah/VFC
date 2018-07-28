@@ -1,52 +1,64 @@
 <%- include('header', {title: "Contract"});  -%>
-<script type="text/javascript" src="../plugins/sweetAlert2/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="../plugins/sweetAlert2/sweetalert2.min.js"></script>
 
-</head>
+    </head>
 
-<body>
-    <div class="row">
-        <div class="col">
-            <!-- Navbar -->
-            <%- include('adminNavbar');  -%>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 offset-1">
-            <form data-toggle="validator" role="form">
-                <div class="form-group row">
-                    <label class="col-2 col-form-label" for="watchContract">Contract Deployed @</label>
-                    <div class="col-5">
-                        <input id="watchContract" name="watchContract" placeholder="Contract Address" pattern="^(0x){1}[0-9a-fA-F]{40}$" class="form-control here" required="required"
-                            type="text" data-error="Not a valid Address">
-                            <div class="help-block with-errors text-danger"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="offset-2 col-4">
-                        <button name="submit" type="submit" class="btn btn-primary">Watch</button>
-                    </div>
-                </div>
-            </form>
-            <div>
-                    <h5>Owner Address: <%= data.ownerAddress %></h5>
-                    <h5>Contract Address: <%=data.contractAddress %></h5>
-                    <h5>No of voters registered: <%= data.count %></h5>
-                    <h5>No of votes Casted: <%= data.voted %></h5>
+    <body>
+        <div class="row">
+            <div class="col">
+                <!-- Navbar -->
+                <%- include('adminNavbar');  -%>
             </div>
-            <a href="/admin/transferToken"><button class="btn btn-success" id="transfer">Transfer Token</button></a>
-            
         </div>
-        <div class="col-md-2"></div>
-    </div>
-    <div class="row">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 offset-1">
+                <form data-toggle="validator" role="form">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="watchContract">Contract Deployed @</label>
+                        <div class="col-5">
+                            <input id="watchContract" name="watchContract" placeholder="Contract Address" pattern="^(0x){1}[0-9a-fA-F]{40}$" class="form-control here"
+                                required="required" type="text" data-error="Not a valid Address">
+                            <div class="help-block with-errors text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-2 col-4">
+                            <button name="submit" type="submit" class="btn btn-primary">Watch</button>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <h5>Owner Address:
+                        <%= data.ownerAddress %>
+                    </h5>
+                    <h5>Contract Address:
+                        <%=data.contractAddress %>
+                    </h5>
+                    <h5>No of voters registered:
+                        <%= data.count %>
+                    </h5>
+                    <h5>No of votes Casted:
+                        <%= data.voted %>
+                    </h5>
+                </div>
+                <a href="/admin/transferToken">
+                    <button class="btn btn-success" id="transfer">Transfer Token</button>
+                </a>
 
-    </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+
+        </div>
 
 
-    <script>
+        </div>
 
-    </script>
-<script type="text/javascript" src="../plugins/bootstrap-validator/validator.min.js"></script>
+        <script>
 
-    <%- include('footer'); -%>
+        </script>
+        <script type="text/javascript" src="../plugins/bootstrap-validator/validator.min.js"></script>
+
+        <%- include('footer'); -%>

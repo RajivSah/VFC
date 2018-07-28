@@ -31,5 +31,12 @@ adminRoute.route('/contract')
         res.render('contract');
     });
 
+adminRoute.route('/register_booth')
+    .post(function(req, res) {
+        console.log("hello");
+        console.log(req.body);
+        res.end();
+    });
+
 
 module.exports = adminRoute;

@@ -63,7 +63,10 @@
                             })
                                 .then((willupdate) => {
                                     if (willupdate.value) {
-                                        window.location.replace('/voter/update?id=' + event.target.name);
+                                        console.log(event.target.name);
+                                        console.log(event.currentTarget.name);
+
+                                        window.location.replace('/voter/update?id=' + event.currentTarget.name);
                                     }
                                 })
                         });
@@ -80,7 +83,7 @@
                                         $.ajax({
                                             url: "http://localhost:8001/api/voter",
                                             method: "DELETE",
-                                            data: { "id": event.target.name },
+                                            data: { "id": event.currentTarget.name },
                                             beforeSend: function () {
                                                 swal({
                                                     text: "loading...",

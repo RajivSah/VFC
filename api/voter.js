@@ -21,6 +21,7 @@ router.use((req, res, next) => {
 
 
 router.post('/:id', function (req, res) {
+    console.log("update voter request");
     var updatedInfo = req.body;
     delete updatedInfo.submit;
     voterModel.findByIdAndUpdate(req.params.id, updatedInfo, function (err, result) {
@@ -36,7 +37,7 @@ router.post('/:id', function (req, res) {
 
 router.route('/')
     .post(function (req, res) {
-        
+        console.log("register voter request")
         voterModel.find({ $or: [{ "formNo": req.body.formNo }, { "citizenshipNo": req.body.citizenshipNo }] }, function (err, result) {
             if (err) {
                 res.status(500).send(error).end();
@@ -63,6 +64,8 @@ router.route('/')
                     voted: false,
                     district: req.body.district,
                     address: req.body.address,
+                    constituency1: req.body.constituency1,
+                    constituency2: req.body.constituency2,
                     ethAddress: voterAddress.address,
                     nagarpalikaNo: req.body.nagarpalikaNo,
                     pkHash: pkHash,
@@ -84,6 +87,7 @@ router.route('/')
     })
     .get(function (req, res) {
         if (req.query.id) {
+            console.log("read voter request");
             voterModel.findById(req.query.id, function (err, doc) {
                 if (!err) {
                     res.json(doc);
@@ -107,6 +111,7 @@ router.route('/')
 
     })
     .delete(function (req, res) {
+        console.log("delete voter requetst");
         voterModel.findByIdAndRemove(req.body.id, function (err, result) {
             if (!err) {
                 res.send(result);

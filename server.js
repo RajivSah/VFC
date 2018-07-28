@@ -26,7 +26,6 @@ const voterApi = require('./api/voter');
 const Datastore = require('nedb');
 const path = require('path');
 
-var router = express.Router();
 var app = express();
 var pk = null;
 
@@ -93,6 +92,7 @@ app.use((req, res, next) => {
     if (web3.currentProvider == null) {
         web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
         myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
+        web3.eth.personal.unlockAccount(config.OWNER_ADDRESS, "r@jivgeth", 0);
 
         fs.readFile('./logs/tokenTransfer.log', function (err, data) {
             var blockNumber = parseInt(data.toString('utf8'));
@@ -146,7 +146,7 @@ setInterval(function () {
 
     }
 
-}, 5000);
+}, 15000);
 
 setInterval(function () {
 
@@ -172,7 +172,7 @@ setInterval(function () {
         });
     }
 
-}, 5000);
+}, 15000);
 
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
@@ -235,6 +235,8 @@ app.get('/logout', (req, res) => {
         res.redirect('/login');
     }
 });
+
+
 
 
 app.listen(config.PORT, function (err) {
