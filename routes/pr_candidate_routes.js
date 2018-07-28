@@ -15,6 +15,8 @@ module.exports.initialize=function(app) {
     app.get('/api/pr_candidate_list',api.get_pr_candidate_list);
     app.get('/api/candidate/pr_candidate',api.get_pr_candidate_info);
 
+    app.get('/pr_candidate/test',pr_candidate.test);
+
 
 }
 
