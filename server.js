@@ -14,6 +14,7 @@ var pr_candidate_routes=require('./routes/pr_candidate_routes');
 var party_routes=require('./routes/party_routes');
 var router = express.Router();
 var app = express();
+var multer=require('multer');
 
 const logger = require('./logger');
 const adminRoute = require('./routes/admin');
@@ -190,9 +191,11 @@ app.use((req, res, next) => {
     }
     next();
 })
+// Multer for File Upload
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({ dest:path.join(__dirname, 'public/uploads/electionSymbols/')}).single('symbolFileName'));
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
