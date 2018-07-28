@@ -5,15 +5,17 @@ const config = require('./config')
 const Web3 = require('web3');
 const fs = require('fs');
 const voterModel = require('./models/voters');
+const candidateModel = require('./models/fptp_candidate');
 const crypto = require('crypto');
 const session = require('express-session');
 const userModel = require('./models/users');
 const url = require('url');
-var routes=require('./routes/fptp_candidate');
-var pr_candidate_routes=require('./routes/pr_candidate_routes');
-var party_routes=require('./routes/party_routes');
+var routes = require('./routes/fptp_candidate');
+var pr_candidate_routes = require('./routes/pr_candidate_routes');
+var party_routes = require('./routes/party_routes');
 var router = express.Router();
 var app = express();
+var multer = require('multer');
 
 const logger = require('./logger');
 const adminRoute = require('./routes/admin');
@@ -67,6 +69,10 @@ var getPage = function (role) {
         case 'voter-manager':
             return ('/voter');
             break;
+
+        case 'candidate-manager':
+            return ('/candidate');
+            break;
     }
 }
 
@@ -114,7 +120,46 @@ app.use((req, res, next) => {
                     console.log(error);
                 });
 
+                myContract.events.RegisteredCandidate({fromBlock: blockNumber})
+                .on('data', function(data) {
+                    fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber + 1);
+                    candidateModel.findOneAndUpdate({ ethAddress: data.returnValues.candidate}, {registered: true}, function(err, result) {
+                        if(!err) {
+                            console.log("fptp candidate registered", data.returnValues.candidate);
+                        }
+                    });
+
+                    config.db_fptp.remove({ address: data.returnValues.candidate}, {multi: false}, function(err, number) {
+                        if(!err) console.log("removed candidate fom log: ", number);
+                    });
+                })
+                .on('error', function (error) {
+                    console.log(error);
+                });
+
+
         });
+
+        // fs.readFile('./logs/tokenTansfer.log', function(err, data) {
+        //     var blockNumber = parseInt(data.toString('utf8'));
+        //     console.log(blockNumber);
+        //     myContract.events.RegisteredCandidate({fromBlock: blockNumber})
+        //         .on('data', function(data) {
+        //             fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber + 1);
+        //             candidateModel.findOneAndUpdate({ ethAddress: data.returnValues.candidate}, {registered: true}, function(err, result) {
+        //                 if(!err) {
+        //                     console.log("fptp candidate registered", data.returnValues.candidate);
+        //                 }
+        //             });
+
+        //             config.db_fptp.remove({ address: data.returnValues.candidate}, {multi: false}, function(err, number) {
+        //                 if(!err) console.log("removed candidate fom log: ", number);
+        //             });
+        //         })
+        //         .on('error', function (error) {
+        //             console.log(error);
+        //         });
+        // });
     }
     next();
 });
@@ -173,6 +218,61 @@ setInterval(function () {
 
 }, 15000);
 
+setInterval(function () {
+
+    if (web3.currentProvider) {
+        var ethAddress;
+        config.db_fptp.findOne({ txHash: null }, function (err, doc) {
+            if (doc) {
+                console.log("candidate blockchain")
+                ethAddress = doc.address;
+                myContract.methods.addCandidate(ethAddress).send({ from: config.OWNER_ADDRESS })
+                    .on('transactionHash', function (hash) {
+                        // console.log(hash);
+                        config.db_fptp.update({ address: ethAddress }, { $set: { txHash: hash, timestamp: Date.now() } });
+                    })
+                    .on('confirmation', function (confNo, receipt) {
+                        // console.log(confNo);
+                    })
+                    .on('receipt', function (receipt) {
+                        // console.log("receipt received");
+                    })
+                    .on('error', function (error) {
+                        console.log(error);
+                    });
+            }
+        });
+
+    }
+
+}, 15000);
+
+setInterval(function () {
+
+    if (web3.currentProvider) {
+        var ethAddress;
+        var tenMinutes = Date.now() - 60000;
+        config.db_fptp.findOne({ $and: [{ txHash: { $ne: null } }, { timestamp: { $lt: tenMinutes } }] }, function (err, doc) {
+            if (doc) {
+                console.log("candidate timeout");
+                web3.eth.getTransactionReceipt(doc.txHash, function (err, result) {
+                    if (!err) {
+                        if (result) {
+                            if (result.status == "0x0") {
+                                config.db_fptp.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });
+                            }
+                        } else {
+                            config.db_fptp.update({ _id: doc._id }, { $set: { txHash: null } }, { multi: false });
+                        }
+
+                    }
+                });
+            }
+
+        });
+    }
+
+}, 15000);
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {
@@ -190,9 +290,11 @@ app.use((req, res, next) => {
     }
     next();
 })
+// Multer for File Upload
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({ dest: path.join(__dirname, 'public/uploads/electionSymbols/') }).single('symbolFileName'));
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');

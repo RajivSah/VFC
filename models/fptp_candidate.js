@@ -18,6 +18,7 @@ var fptp_candidateSchem=new Schema({
     symbolName: String, //
     symbolFileName: String,
     ethAddress: String,
+    registered: Boolean
     // pkHash: String        // HOR (House of Representative) or PA (public Assembly)  
 
 

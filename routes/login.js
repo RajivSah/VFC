@@ -9,6 +9,9 @@ var getPage = function (role) {
         case 'voter-manager':
             return ('/voter');
             break;
+        case 'candidate-manager':
+            return('/candidate');
+            break;
     }
 }
 
