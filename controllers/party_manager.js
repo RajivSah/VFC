@@ -3,6 +3,10 @@ const setNotification = require('../notification');
 var party_model=require('../models/pr_party_model');
 var web3=new Web3();
 
+var fs=require('fs'),
+path=require('path');
+
+
 module.exports={
     register:function(req,res){
         console.log(req.body);
@@ -17,24 +21,87 @@ module.exports={
                 //setNotification(req,true,"error","Party Already Registered");
             }
             else{
-                var prAddress=web3.eth.accounts.create();
-                var horAddress=web3.eth.accounts.create();
-                party_model.create({
-                    partyID:req.body.partyID,
-                    name:req.body.name,
-                    symbolEnglish:req.body.symbolEnglish,
-                    symbolNepali:req.body.symbolNepali,
-                    prEthAddress:prAddress.address,
-                    HOREthAddress:horAddress.address,
-                    symbolFilename:req.body.symbolFileName
-                },function(err, doc){
-                    if(err)
-                        res.status(500).send(error).end();
-                    else{
-                        setNotification(req, true, "success", "Candidate "+req.body.partyName+" has beem registered.");
-                        res.redirect('/party/?id='+doc.id);
+                
+
+                var saveImage=function()  {
+                    var possible='abcdefghijklmnopqrstuvwxyz0123456789'
+                    imgUrl= '';
+                //
+                    for( var i=0; i<10; i+=1) {
+                    imgUrl+=possible.charAt(Math.floor(Math.random()*possible.length));
                     }
+                //  Search for an image with the same filename by performing a find:
+
+                party_model.find({'symbolFileName':imgUrl},function(err,result){
+                    if(result.length>0) {
+                        saveImage();
+                    }
+                    
+
                 });
+
+                    console.log('File path for the image: ', req.file.filename);
+                    var tempPath=req.file.path,
+                        ext=path.extname(req.file.originalname).toLowerCase(),
+                        targetPath=path.resolve('./public/uploads/electionSymbols/'+imgUrl + ext );
+            
+                //
+                        console.log('Extrension:::::',ext);
+                //
+                    if (ext=='.jpg' || ext=='.png' || ext=='.jpeg' || ext=='.gif') {
+                    fs.rename(tempPath, targetPath, function (err){
+                        if (err) throw err;
+
+                        var prAddress=web3.eth.accounts.create();
+                        var horAddress=web3.eth.accounts.create();
+                        party_model.create({
+                            partyID:req.body.partyID,
+                            name:req.body.name,
+                            symbolEnglish:req.body.symbolEnglish,
+                            symbolNepali:req.body.symbolNepali,
+                            prEthAddress:prAddress.address,
+                            HOREthAddress:horAddress.address,
+                            symbolFilename:imgUrl+ext
+                        },function(err, doc){
+                            if(err)
+                                res.status(500).send(error).end();
+                            else{
+                                setNotification(req, true, "success", "Candidate "+req.body.partyName+" has beem registered.");
+                                res.redirect('/party/?id='+doc.id);
+                            }
+                        });
+            
+                    });
+                    } else {
+                    fs.unlink(tempPath, function() {
+                        if(err) throw err;
+                        res.json(500, {error: 'Only image files are allowed.'});
+                    });
+                    }
+            
+                };
+                saveImage();
+
+
+
+                // var prAddress=web3.eth.accounts.create();
+                // var horAddress=web3.eth.accounts.create();
+                // party_model.create({
+                //     partyID:req.body.partyID,
+                //     name:req.body.name,
+                //     symbolEnglish:req.body.symbolEnglish,
+                //     symbolNepali:req.body.symbolNepali,
+                //     prEthAddress:prAddress.address,
+                //     HOREthAddress:horAddress.address,
+                //     symbolFilename:req.body.symbolFileName
+                // },function(err, doc){
+                //     if(err)
+                //         res.status(500).send(error).end();
+                //     else{
+                //         setNotification(req, true, "success", "Candidate "+req.body.partyName+" has beem registered.");
+                //         res.redirect('/party/?id='+doc.id);
+                //     }
+                // });
 
             }
 
