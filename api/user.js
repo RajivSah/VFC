@@ -34,7 +34,10 @@ router.route('/')
                 userModel.create({
                     username: user.username,
                     password: user.password,
-                    role: user.role
+                    role: user.role,
+                    district: user.district,
+                    constituency1: user.constituency1,
+                    constituency2: user.constituency2
                 }, function (err, doc) {
                     if (!err){
                         setNotification(req, true, "success", "User added successfully");
