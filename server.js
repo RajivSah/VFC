@@ -63,7 +63,7 @@ var sessionChecker = (req, res, next) => {
 
 var getPage = function (role) {
     switch (role) {
-        case 'Admin':
+        case 'admin':
             return ('/admin');
             break;
         case 'voter-manager':
