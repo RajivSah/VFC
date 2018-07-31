@@ -2,7 +2,7 @@ const Web3=require('web3');
 const setNotification = require('../notification');
 var party_model=require('../models/pr_party_model');
 var web3=new Web3();
-
+var config = require('../config');
 var fs=require('fs'),
 path=require('path');
 
@@ -66,7 +66,9 @@ module.exports={
                             if(err)
                                 res.status(500).send(error).end();
                             else{
-                                setNotification(req, true, "success", "Candidate "+req.body.partyName+" has beem registered.");
+                                config.db_fptp.insert({ address: prAddress.address, txHash: null, timestamp: Date.now() });
+                                config.db_fptp.insert({ address: horAddress.address, txHash: null, timestamp: Date.now() });
+                                setNotification(req, true, "success", "Candidate has beem registered.");
                                 res.redirect('/party/?id='+doc.id);
                             }
                         });
