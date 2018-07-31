@@ -274,7 +274,6 @@ setInterval(function () {
 
 }, 15000);
 
-
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {
         if (!error) {
