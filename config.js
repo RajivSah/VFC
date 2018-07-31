@@ -279,7 +279,7 @@ const configure = {
         }
     ],
     OWNER_ADDRESS: "0xe374d147ec45668ce39ae3e3725bf5d22af78463",
-    CONTRACT_ADDRESS: "0x58185553421bAa839dC56b887c4CE71b38b93aDa",
+    CONTRACT_ADDRESS: "0x10C378AbE90ac3A61a0C1b25E8A8f2d31212FF3D",
     web3Connection: 'http://127.0.0.1:8546',
     pk: null,
     BASE_DIR: __dirname,

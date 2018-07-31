@@ -104,6 +104,7 @@ app.use((req, res, next) => {
             console.log(blockNumber);
             myContract.events.RegisteredVoter({ fromBlock: blockNumber })
                 .on('data', function (data) {
+                    console.log("data received");
                     fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber + 1);
                     voterModel.findOneAndUpdate({ ethAddress: data.returnValues.voter }, { tokenTransferred: true }, function (err, result) {
                         if (!err) {
