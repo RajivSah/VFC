@@ -163,7 +163,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-
+/*
 setInterval(function () {
 
     if (web3.currentProvider) {
@@ -273,7 +273,7 @@ setInterval(function () {
     }
 
 }, 15000);
-
+*/
 
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {

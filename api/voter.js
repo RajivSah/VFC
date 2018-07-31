@@ -51,8 +51,9 @@ router.route('/')
                 console.log(voterAddress);
 
                 const hash = crypto.createHash('sha256');
-                hash.update(voterAddress.privateKey);
+                hash.update((voterAddress.privateKey).toString());
                 var pkHash = hash.digest('hex');
+                console.log('Hashed Pk: ', pkHash);
 
                 voterModel.create({
                     formNo: req.body.formNo,
@@ -80,10 +81,17 @@ router.route('/')
                         setNotification(req, true, "success", "Voter Added Successfully");
                         const password=doc.district;
                         console.log(doc.district);
-                        var cipher=crypto.createCipher('aes-128-cbc', password)
+                        var cipher=crypto.createCipher('aes-256-cbc', password)
                         var crypted=cipher.update((voterAddress.privateKey), 'utf8','hex')
                         crypted+=cipher.final('hex')
                         config.pk = crypted;
+
+    
+                        console.log('Private Key Type: ', (voterAddress.privateKey).length)
+                        console.log(voterAddress.privateKey);
+                        console.log('Encrypted Value: ', config.pk);
+                        console.log('Encrypted Value Length: ', (config.pk).length);
+                        console.log('District:', doc.district);
                         res.redirect('/voter?id=' + doc.id);
                     }
                 });
