@@ -79,20 +79,24 @@ router.route('/')
                     } else {
                         config.db.insert({ address: doc.ethAddress, txHash: null, timestamp: Date.now() });
                         setNotification(req, true, "success", "Voter Added Successfully");
-                        // const password=doc.district;
-                        // console.log(doc.district);
-                        // var cipher=crypto.createCipher('aes-256-cbc', password)
-                        // var crypted=cipher.update((voterAddress.privateKey), 'utf8','hex')
-                        // crypted+=cipher.final('hex')
-                        // config.pk = crypted;
+                        console.log('District Length: ', doc.district.length);
+                        
+                        
+                        const password=doc.district;
+                        console.log(doc.district);
+                        var cipher=crypto.createCipher('aes-256-cbc', password)
+                        var crypted=cipher.update((voterAddress.privateKey), 'utf8','hex')
+                        crypted+=cipher.final('hex')
+                        config.pk = crypted;
 
     
-                        // console.log('Private Key Type: ', (voterAddress.privateKey).length)
-                        // console.log(voterAddress.privateKey);
-                        // console.log('Encrypted Value: ', config.pk);
-                        // console.log('Encrypted Value Length: ', (config.pk).length);
-                        // console.log('District:', doc.district);
-                        config.pk=voterAddress.privateKey;
+                        console.log('Private Key Type: ', (voterAddress.privateKey).length)
+                        console.log(voterAddress.privateKey);
+                        console.log('Encrypted Value: ', config.pk);
+                        console.log('Encrypted Value Length: ', (config.pk).length);
+                        console.log('District:', doc.district);
+
+                        // config.pk=voterAddress.privateKey;
                         res.redirect('/voter?id=' + doc.id);
                     }
                 });
