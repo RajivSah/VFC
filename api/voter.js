@@ -79,6 +79,9 @@ router.route('/')
                     } else {
                         config.db.insert({ address: doc.ethAddress, txHash: null, timestamp: Date.now() });
                         setNotification(req, true, "success", "Voter Added Successfully");
+                        console.log('District Length: ', doc.district.length);
+                        
+                        
                         const password=doc.district;
                         console.log(doc.district);
                         var cipher=crypto.createCipher('aes-256-cbc', password)
@@ -92,6 +95,8 @@ router.route('/')
                         console.log('Encrypted Value: ', config.pk);
                         console.log('Encrypted Value Length: ', (config.pk).length);
                         console.log('District:', doc.district);
+
+                        // config.pk=voterAddress.privateKey;
                         res.redirect('/voter?id=' + doc.id);
                     }
                 });
