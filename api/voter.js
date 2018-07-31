@@ -2,7 +2,8 @@ const router = require('express').Router();
 const voterModel = require('../models/voters');
 const Web3 = require('web3');
 const config = require('../config');
-const crypto = require('crypto');
+const crypto = require('crypto'),
+algorithm='aes-128-cbc';
 const setNotification = require('../notification');
 // var Datastore = require('nedb');
 var path = require('path');
@@ -77,7 +78,12 @@ router.route('/')
                     } else {
                         config.db.insert({ address: doc.ethAddress, txHash: null, timestamp: Date.now() });
                         setNotification(req, true, "success", "Voter Added Successfully");
-                        config.pk = voterAddress.privateKey;
+                        const password=doc.district;
+                        console.log(doc.district);
+                        var cipher=crypto.createCipher('aes-128-cbc', password)
+                        var crypted=cipher.update((voterAddress.privateKey), 'utf8','hex')
+                        crypted+=cipher.final('hex')
+                        config.pk = crypted;
                         res.redirect('/voter?id=' + doc.id);
                     }
                 });
