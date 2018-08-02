@@ -1,0 +1,120 @@
+<div class="container form-container">
+    <form class="form-horizontal" data-toggle="validator" id="candidate-form" method="post" action="/api/getResult">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>PR Candidate Registration</legend>
+
+            
+            <div class="form-row">
+                    <!-- Text input     Candidate For-->
+                    <div class="form-group col-md-6">
+                        <label class="col-md-12 control-label" for="election_type">election_type</label>
+                        <div class="col-md-12">
+                            <select required id="election_type_selector" name="election_type" class="form-control">
+                                <option value="" selected hidden>Choose One</option>
+                                <option value="FPTP">FPTP</option>
+                                <option value="PR">PR</option>
+                            </select>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                </div>
+            
+    
+
+            <div class="form-row">
+                <!-- Text input     Candidate For-->
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="district">Candidate For</label>
+                    <div class="col-md-12">
+                        <select required id="election_selector" name="electedfor" class="form-control">
+                            <option value="" selected hidden>Choose One</option>
+                            <option value="HOR">House of Representatives</option>
+                            <option value="PA">Provisional Assembly</option>
+                        </select>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="district">District</label>
+                    <div class="col-md-12">
+                        <select id="district_selector" name="district" class="form-control" required="required" type="text">
+                            <option value="" selected disabled hidden>Choose One</option>
+                            <% districts.forEach(function(dist){ %>
+                                <option value="<%=dist.district_name %>">
+                                    <%=dist.district_name %>
+                                </option>
+                                <% }); %>
+                        </select>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-row">
+                <!-- Constituency Number-->
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="constituency">Constituenty Number ( निर्वाचन क्षेत्र)</label>
+                    <div class="col-md-12">
+                        <input type="number" name="constituency">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+
+            </div>
+
+
+
+
+
+
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-12 control-label" for="submit"></label>
+                <div class="col-md-12">
+                    <button id="submitButton" type="submit" name="submit" class="btn btn-primary">Check Result</button>
+                    <!--<button id="Test" type="button" class="btn btn-primary" onclick="test()">Test</button> -->
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+
+
+<style>
+    .with-errors {
+        height: 20px;
+        font-size: 90%;
+        color: red;
+    }
+
+    .form-container {
+        padding: 8%;
+        background-color: #F1F7FC;
+    }
+
+    #candidate-form {
+        background-color: white;
+        padding: 5%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+

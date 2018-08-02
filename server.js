@@ -13,6 +13,7 @@ const url = require('url');
 var routes = require('./routes/fptp_candidate');
 var pr_candidate_routes = require('./routes/pr_candidate_routes');
 var party_routes = require('./routes/party_routes');
+var result_routes=require('./routes/result_routes');
 var router = express.Router();
 var app = express();
 var multer = require('multer');
@@ -164,7 +165,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-
+/*
 setInterval(function () {
 
     if (web3.currentProvider) {
@@ -274,7 +275,7 @@ setInterval(function () {
     }
 
 }, 15000);
-
+*/
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {
         if (!error) {
@@ -350,3 +351,4 @@ app.listen(config.PORT, function (err) {
 routes.initialize(app);
 pr_candidate_routes.initialize(app);
 party_routes.initialize(app);
+result_routes.initialize(app);

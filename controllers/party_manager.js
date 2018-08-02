@@ -52,14 +52,20 @@ module.exports={
                     fs.rename(tempPath, targetPath, function (err){
                         if (err) throw err;
 
-                        var prAddress=web3.eth.accounts.create();
+                        var prAddress=[];
+                        for(var i=0;i<7;i++){
+                            var temp=web3.eth.accounts.create();
+                            prAddress.push(temp.address);
+                            console.log(temp.address);
+
+                        }
                         var horAddress=web3.eth.accounts.create();
                         party_model.create({
                             partyID:req.body.partyID,
                             name:req.body.name,
                             symbolEnglish:req.body.symbolEnglish,
                             symbolNepali:req.body.symbolNepali,
-                            prEthAddress:prAddress.address,
+                            prEthAddress:prAddress,
                             HOREthAddress:horAddress.address,
                             symbolFilename:imgUrl+ext
                         },function(err, doc){

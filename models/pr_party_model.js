@@ -6,7 +6,7 @@ var pr_party=new Schema({
     name:String,
     symbolEnglish:String,
     symbolNepali:String,
-    prEthAddress:String,
+    prEthAddress:[String],
     HOREthAddress:String,
     symbolFilename:String
 });
