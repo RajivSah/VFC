@@ -1,0 +1,282 @@
+<div class="container form-container">
+    <form class="form-horizontal" data-toggle="validator" id="candidate-form" method="post" action="/pr_candidate/save">
+      <fieldset>
+  
+        <!-- Form Name -->
+        <legend>Candidate Ethereum Address</legend>
+  
+        <div class="form-row">
+          <!-- Text input     Candidate For-->
+          <div class="form-group col-md-6">
+              <label class="col-md-12 control-label" for="district">Candidate For</label>
+              <div class="col-md-12">
+                <select required id="election_selector" name="electedfor" class="form-control" >
+                    <option value="" selected  hidden>Choose One</option>
+                  <option value="HOR">House of Representatives</option>
+                  <option value="PA">Provisional Assembly</option>
+                </select>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+
+
+            <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="district">District</label>
+            <div class="col-md-12">
+              <select id="district_selector" name="district" class="form-control" required="required" type="text">
+                  <option value=""selected disabled hidden>Choose One</option>
+                <% districts.forEach(function(dist){ %>
+                  <option value="<%=dist.district_name %>"><%=dist.district_name %></option>
+                <% }); %>
+              </select>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          </div>
+          
+  
+
+
+        
+
+          <div class="form-row">                                         
+              <!-- Constituency Number-->
+                <div class="form-group col-md-6">
+                    <label class="col-md-12 control-label" for="constituency">Constituenty Number (
+                        निर्वाचन क्षेत्र)</label>
+                    <div class="col-md-12">
+                      <select id="constituency_selector" name="constituency" class="form-control" required>
+                        <option value=""selected disabled hidden>Choose One</option>
+                        
+                      </select>
+                      <div class="help-block with-errors"></div>
+                    </div>
+                  </div>
+            </div>     
+
+
+            <div>
+              
+            </div>
+            
+
+            
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-12 control-label" for="submit"></label>
+          <div class="col-md-12">
+            <button id="submitButton" type="submit" name="submit" class="btn btn-primary">Register</button>
+            <!--<button id="Test" type="button" class="btn btn-primary" onclick="test()">Test</button> -->
+          </div>
+        </div>
+  
+      </fieldset>
+    </form>
+  </div>
+  
+  
+  <style>
+    .with-errors {
+      height: 20px;
+      font-size: 90%;
+      color: red;
+    }
+  
+    .form-container {
+      padding: 8%;
+      background-color: #F1F7FC;
+    }
+  
+    #candidate-form {
+      background-color: white;
+      padding: 5%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+  </style>
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+  
+  <script>
+  $ (function() {
+
+//  Hide the Constituency Selector at the beginning. Only show it after selecting District and Election Category
+
+  var change=function(event){
+    var dist=$("#district_selector option:selected").text();
+    var type=$("#election_selector option:selected").text();
+    
+    // Check if Option is selected.
+    if(dist=="Choose One" || type=="Choose One")
+        {
+          // alert("Invalid options in one of the selector.");
+          return;
+          
+        }
+   
+    // Show Constituency Selector and Populate it with Data
+    var const_selector=$('#constituency_selector');
+    const_selector.empty();
+
+    //  AJAX Query to get number of Constituency.
+    $.get('/get/district_const/'+dist).done(function(data){
+      const_selector.append($("<option>",{
+          value: '',
+          text: "Choose One"
+      }));
+      if(type=="House of Representatives")
+      {
+        // alert(data.no_of_Hor);
+            for( var i=1; i<=data.no_of_Hor; i++)
+          {
+            const_selector.append($('<option>', {
+              value: i,
+              text: i
+          }));
+          }
+     }
+      else{
+          for( var i=1; i<=data.no_of_Prov; i++)
+          {
+            const_selector.append($('<option>', {
+              value: i,
+              text: i
+          }));
+          }
+      } 
+    });
+  }
+
+  // Assigning onChnage evernt to both selectors.
+  change();
+  $('#district_selector').on('change', change);
+  $('#election_selector').on('change', change);
+});
+</script>  
+  
+  <script src='../plugins/multiSelect/js/jquery.multi-select.js'></script>
+  <script>
+
+    
+      var candidates={
+        "electedFor":" ",
+        "district":" ",
+        "constituency":" ",
+        "parties":[]
+      };
+      var parties=[];
+      candidates.parties=parties;
+      
+         
+    
+    $('#pre-selected-options').multiSelect({  
+
+      /*afterSelect: function(values){
+        
+        var partyStr=values[0];
+        var party=partyStr.split(",");
+        var id=party[0].split("_id:")[1];
+        var name=(party[1].split("name:'")[1]).split("'}")[0];
+        
+        var party={
+          "id":id,
+          "name":name
+        }
+        candidates.parties.push(party);
+        
+        //console.log(candidates); 
+
+      },
+  
+      afterDeselect: function(values){
+        var partyStr=values[0];
+        var party=partyStr.split(",");
+        var id=party[0].split("_id:")[1];
+        var name=(party[1].split("name:'")[1]).split("'}")[0];
+        
+        var index = candidates.parties.findIndex(x => x.name==name );
+        candidates.parties.splice(index, 1);
+        //console.log(candidates);        
+          
+      }*/
+    });
+
+    function test(){
+      alert("Hey");
+      alert(document.getElementById('pre-selected-options').value);
+    }
+    
+  </script>
+
+
+
+
+<script>
+  $(document).ready(function() {
+    var query = window.location.search;
+    const toast = swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    if (query) {
+      var loadingPopup = function () {
+        swal({
+          text: "loading...",
+          onOpen: function () {
+            swal.showLoading();
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false
+        });
+      }
+      var loadingPopdown = function () {
+        swal.close();
+      }
+      $.ajax({
+        method: "GET",
+        url: "http://localhost:8001/api/candidate/pr_candidate" + query,
+        beforeSend: function () {
+          loadingPopup();
+        },
+        success: function (doc) {
+          loadingPopdown();
+          $("#election_selector").val(doc.electedfor);
+          $("#district_selector").val(doc.district);
+          $("#district_selector").trigger("change");
+          $("#constituency_selector").val(doc.constituency);
+          setTimeout(()=>{$("#constituency_selector").val(doc.constituency);}, 500);
+          var parties=[];
+          doc.parties.forEach(function(party){ 
+            parties.push("{ _id: "+party._id+", name: '"+party.name+"' }");
+            
+          });
+
+           
+          //parties.push("{ _id: 5b53e7e22dc6e53527f5673b, name: 'Rastriya Prajatantra Party' }");
+          //parties.push("{ _id: 5b2e740e1751e950df12f2b4, name: 'UML' }");
+          //$('#pre-selected-options').multiSelect('select',"{ _id: 5b2e73e11751e950df12f2b3, name: 'Nepali Congress' }");
+          $('#pre-selected-options').multiSelect('select',parties);
+          //alert(doc.parties[0].name);          
+          $("#submitButton").html("Update");
+          $("#candidate-form").attr('action', '/pr_candidate/update'+ query);
+          
+          
+        },
+        error: function (error) {
+          loadingPopdown();
+          toast({
+            type: "error",
+            title: "Error! Try again later"
+          });
+        }
+      });
+    }
+    
+  });
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+  
