@@ -13,7 +13,7 @@ const url = require('url');
 var routes = require('./routes/fptp_candidate');
 var pr_candidate_routes = require('./routes/pr_candidate_routes');
 var party_routes = require('./routes/party_routes');
-var result_routes=require('./routes/result_routes');
+var result_routes = require('./routes/result_routes');
 var router = express.Router();
 var app = express();
 var multer = require('multer');
@@ -45,13 +45,13 @@ app.use(session({
         expires: 600000
     }
 }));
-app.use((req, res, next) => {
-    if (!req.session.user && url.parse(req.url).pathname != '/login' && req.url != '/notification') {
-        res.redirect('/login');
-    } else {
-        next();
-    }
-});
+// app.use((req, res, next) => {
+//     if (!req.session.user && url.parse(req.url).pathname != '/login' && req.url != '/notification') {
+//         res.redirect('/login');
+//     } else {
+//         next();
+//     }
+// });
 
 var sessionChecker = (req, res, next) => {
     if (req.session.user) {
@@ -93,12 +93,19 @@ var setNotification = function (req, notify, Type = null, Message = null) {
 
 var web3 = new Web3();
 var myContract;
+web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
+myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
+web3.eth.personal.unlockAccount(config.OWNER_ADDRESS, "r@jivgeth", 0);
+
+
 
 app.use((req, res, next) => {
     if (web3.currentProvider == null) {
         web3.setProvider(new Web3.providers.WebsocketProvider(config.web3Connection))
         myContract = new web3.eth.Contract(config.ABI, config.CONTRACT_ADDRESS);
         web3.eth.personal.unlockAccount(config.OWNER_ADDRESS, "r@jivgeth", 0);
+
+
 
         fs.readFile('./logs/tokenTransfer.log', function (err, data) {
             var blockNumber = parseInt(data.toString('utf8'));
@@ -122,17 +129,17 @@ app.use((req, res, next) => {
                     console.log(error);
                 });
 
-                myContract.events.RegisteredCandidate({fromBlock: blockNumber})
-                .on('data', function(data) {
+            myContract.events.RegisteredCandidate({ fromBlock: blockNumber })
+                .on('data', function (data) {
                     fs.writeFileSync('./logs/tokenTransfer.log', data.blockNumber + 1);
-                    candidateModel.findOneAndUpdate({ ethAddress: data.returnValues.candidate}, {registered: true}, function(err, result) {
-                        if(!err) {
+                    candidateModel.findOneAndUpdate({ ethAddress: data.returnValues.candidate }, { registered: true }, function (err, result) {
+                        if (!err) {
                             console.log("fptp candidate registered", data.returnValues.candidate);
                         }
                     });
 
-                    config.db_fptp.remove({ address: data.returnValues.candidate}, {multi: false}, function(err, number) {
-                        if(!err) console.log("removed candidate fom log: ", number);
+                    config.db_fptp.remove({ address: data.returnValues.candidate }, { multi: false }, function (err, number) {
+                        if (!err) console.log("removed candidate fom log: ", number);
                     });
                 })
                 .on('error', function (error) {
@@ -276,6 +283,7 @@ setInterval(function () {
 
 }, 15000);
 */
+
 connectDb = function (username = 'rajiv', password = 'rajiv') {
     mongoose.connect(`mongodb://${username}:${password}@ds133630.mlab.com:33630/vfc`, (error) => {
         if (!error) {
