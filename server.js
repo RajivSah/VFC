@@ -321,6 +321,7 @@ app.get('/clearNotification', function (req, res) {
 
 
 app.use('/login', loginRoute);
+
 app.use('/admin', adminRoute);
 app.use('/api/users', userApi);
 app.use('/voter', voterRoute);

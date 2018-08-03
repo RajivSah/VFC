@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #F1F7FC;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,7 +26,7 @@
         <form method="post">
             <h2 class="sr-only">Login Form</h2>
             <div class="illustration">
-                <i class="icon ion-ios-locked-outline"></i>
+                <img src='/public/img/electioncommission.png' width='128px' height="128px" />
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="userName" placeholder="Username" autofocus="" required>
@@ -58,7 +63,7 @@
             if (window.location.search) {
                 query = getQueryParams(window.location.search);
                 var message;
-                if(query.error == 'user'){
+                if (query.error == 'user') {
                     message = "User not found";
                 } else {
                     message = "Incorrect Password";
