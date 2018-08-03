@@ -64,7 +64,7 @@ var sessionChecker = (req, res, next) => {
 
 var getPage = function (role) {
     switch (role) {
-        case 'admin':
+        case 'Admin':
             return ('/admin');
             break;
         case 'voter-manager':
@@ -308,7 +308,8 @@ app.use(multer({ dest: path.join(__dirname, 'public/uploads/electionSymbols/') }
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, booth_address, token, username, fptp_hor_ethAddress, fptp_pa_ethAddress, pr_hor_ethAddress, pr_pa_ethAddress, test');
+    res.header('Access-Control-Expose-Headers', ' booth_address, token, username, fptp_hor_ethAddress, fptp_pa_ethAddress, pr_hor_ethAddress, pr_pa_ethAddress, test');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
@@ -329,6 +330,7 @@ app.get('/clearNotification', function (req, res) {
 
 
 app.use('/login', loginRoute);
+
 app.use('/admin', adminRoute);
 app.use('/api/users', userApi);
 app.use('/voter', voterRoute);
