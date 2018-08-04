@@ -10,7 +10,7 @@
                 <center>
                     <img src='/public/img/electioncommission.png' width='128px' height="128px" />
                     <br> निर्वाचन आयोग
-                    <h4>प्रतिनिधिसभा सदस्य तथा प्रदेशसभा सदस्य निर्वाचन नतिजा , २०७५ </h4>
+                    <h4>प्रतिनिधिसभा सदस्य तथा प्रदेशसभा सदस्य <br/> निर्वाचन नतिजा , २०७५ </h4>
 
 
 
@@ -47,10 +47,10 @@
 
 
                         <!-- Text input     Candidate For-->
-                        <div class="form-group row">
+                        <div class="form-group row" id="candidate_selector_div">
                             <label class="col-4 col-form-label col-form-label-sm " for="district">Candidate For</label>
                             <div class="col-8">
-                                <select required id="election_selector" name="electedfor" class="form-control form-control-sm">
+                                <select required id="candidate_type_selector" name="electedfor" class="form-control form-control-sm">
                                     <option value="" selected hidden>Choose One</option>
                                     <option value="HOR">House of Representatives</option>
                                     <option value="PA">Provisional Assembly</option>
@@ -61,7 +61,7 @@
 
 
 
-                        <div class="form-group row">
+                        <div class="form-group row" id='district_selector_div'>
                             <label class="col-4 col-form-label col-form-label-sm " for="district">District</label>
                             <div class="col-8">
                                 <select id="district_selector" name="district" class="form-control form-control-sm" required="required" type="text">
@@ -84,11 +84,31 @@
 
 
                         <!-- Constituency Number-->
-                        <div class="form-group row">
+                        <div class="form-group row" id='constituency_selector_div'>
                             <label class="col-4 col-form-label col-form-label-sm " for="constituency">Constituenty Number
                                 <br/> ( निर्वाचन क्षेत्र)</label>
                             <div class="col-8 ">
                                 <input class="form-control form-control-sm" type="number" name="constituency">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row" id='state_selector_div'>
+                            <label class="col-4 col-form-label col-form-label-sm " for="state">State No.
+                            </label>
+                            <div class="col-8 ">
+                                <select id="state_selector" name="state" class="form-control form-control-sm" required="required" type="text">
+                                    <option value="" selected disabled hidden>Choose One</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                </select>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
@@ -152,3 +172,39 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+
+    <script>
+        $('#state_selector_div').hide();
+
+        var electionChange = () => {
+            var election_type = $('#election_type_selector option:selected').text();
+
+            if (election_type == 'PR') {
+                $('#district_selector_div').hide();
+                $('#constituency_selector_div').hide();
+            } else if (election_type == 'FPTP') {
+                $('#district_selector_div').show();
+                $('#constituency_selector_div').show();
+                $('#state_selector_div').hide();
+            }
+            console.log(election_type);
+        }
+
+
+        var candidateChange=()=>{
+            var election_type = $('#election_type_selector option:selected').text();
+            var candidate_type= $('#candidate_type_selector option:selected').text();
+            console.log(election_type);
+            console.log(candidate_type);
+
+            if(election_type=='PR'  && candidate_type=='Provisional Assembly'){
+                $('#state_selector_div').show();
+            } else if(election_type=='PR'  && candidate_type=='House of Representatives'){
+                $('#state_selector_div').hide();
+            }
+        }
+        $('#election_type_selector').on('change', electionChange);
+        $('#candidate_type_selector').on('change', candidateChange);
+
+    </script>
